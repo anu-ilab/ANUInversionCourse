@@ -32,5 +32,6 @@ setup(
         "matplotlib>=3.5.0",
         "scipy>=1.7.0",
         "tqdm>=4.62.0",
+        "seaborn>=0.11.0",
     ],
 )
