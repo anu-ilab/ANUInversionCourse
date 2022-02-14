@@ -1,0 +1,9 @@
+
+	1.0.10	Extra debug information on Delaunay failures.
+
+	1.0.12  Added restartable MPI 2d forward model function.
+	
+	1.1.0	Added support for python3 including tutorial.
+		Added support for recent macosx (no universal binaries).
+		Updated README for unprivileged users.
+		Updated terrawulf build instructions.

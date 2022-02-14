@@ -1,0 +1,184 @@
+
+RJMCMC Library v1.1.0
+
+This library contains low-level routines for Reversible Jump
+Monte-Carlo Markov Chain regression and forward model problems.
+
+Compiling and Installing
+------------------------
+
+The library uses the standard autotools build system, to compile:
+
+> ./configure --prefix=${HOME}
+> make
+> make install
+> export PATH=${PATH}:${HOME}/bin
+> export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${HOME}/lib
+
+The "--prefix" option is optional however the default installation
+prefix is /usr/local which requires sudo (root) access for the
+"make install" step.
+
+On some systems it may be necessary to modify the configure step:
+
+> ./configure --prefix=${HOME} CC=gcc FC=gfortran CXX=g++
+
+This is to ensure the correct compilers are used.
+
+The PATH and LD_LIBRARY_PATH steps may be placed in login
+scripts (eg. ~/.bashrc) so that the contents of ~/bin (programs)
+and ~/lib (shared libraries) will be discoverable in subsequent
+logins."~/" is equivalent to "${HOME}/" in "bash".
+
+The library can also be linked with an MPI library for parallel
+processing. This has been tested with OpenMPI on Linux and 
+MacOSX but other MPI implementations should/may work. In this case
+the configure step will look something like:
+
+> ./configure --prefix=${HOME} CC=mpicc FC=mpifort CXX=mpicxx
+
+This is so the MPI compiler wrapper scripts will be used.
+
+Template Code
+-------------
+
+There is a simple template code that can be copied and modified 
+to suit your needs in template/part1d. The code is commented to
+show how to use the basic features of the library and serves as
+a good starting point.
+
+Documentation
+-------------
+
+There is documentation for the routines within the code for the
+main routines, see include/rjmcmc/regression.h and 
+include/rjmcmc/forwardmodel.h. This is written in doxygen format
+and can be generated using the dox file in the doc directory, ie
+
+> cd doc
+> doxygen rjmcmc.dox
+
+Then the documentation can be viewed in a web browser by opening
+the doc/html/index.html file.
+
+Examples
+--------
+
+There are several examples in under the examples directory which 
+show how to use different aspects of the code. The examples are
+arranged in a directory hierarchy corresponding to the broad
+categories of the problems they solve, e.g. examples that solve
+1D partitioned regression problems are in the 
+"examples/1d/partitioned/regression" directory.
+
+Examples that have an "f" as the last character of the name are
+fortran examples, e.g. examples/1d/partitioned/fm/functionfitf.
+
+The examples can be built and run inplace, e.g.
+
+> cd examples/1d/partitioned/regression/multistep
+> make
+> ./multistep
+
+This will run the regression problem then print out the count of
+proposals and acceptances and write several files. These results can
+be plotted with Gnuplot or R:
+
+> gnuplot
+>> plot "./multistep.mean" with lines, "data.txt"
+
+or
+
+> R
+>> d <- read.table("data.txt")
+>> mean <- read.table("multistep.mean")
+>> plot(d$V1, d$V2)
+>> lines(mean)
+
+Python Interface
+----------------
+
+There is a python interface to the 1D regression codes available under
+the python/swig directory with a tutorial introduction under:
+
+  python/tutorial/single/doc
+  python/tutorial/multi/doc
+
+The python interface requires swig to build and the tutorials rely on
+latex to create the documents and matplotlib for graphing the results.
+Recent python 2 and python 3 are supported.
+
+For Linux and cygwin, standard installation should follow this procedure:
+> ./configure --prefix=${HOME} PKG_CONFIG_PATH=${HOME}/lib/pkg-config
+> make 
+> make install
+> cd python/swig
+> export PKG_CONFIG_PATH=${HOME}/lib/pkg-config
+> swig -Wall -python rjmcmc.i
+> python setup.py build
+> python setup.py install
+
+Where "python" referes to the installation of python that you want to
+install rjmcmc in. It's necessary to prefix the final step with "sudo "
+if a system python is being used.
+
+For MacOSX, the python interface uses the script in macosx/buidlforpython.sh.
+So the procedure is:
+
+> make distclean 
+> cd macosx
+> sh buildforpython.sh
+> cd ../python/swig
+> export PKG_CONFIG_PATH=${HOME}/lib/pkg-config
+> swig -Wall -python rjmcmc.i
+> python setup.py build
+> sudo python setup.py install
+
+Where "python" referes to the installation of python that you want to
+install rjmcmc in.
+
+Note that the first "make distclean" is only needed if you have previously
+configured the source. It will fail harmlessly if you haven't.
+
+The "universal" scripts were for older versions of MacOSX - current MacOSX
+no longer supports "universal" binaries combining i386 and x86_64 - it's
+all x86_64.
+
+Tests
+-----
+
+There are some unit tests in the tests directory. These require CUnit to 
+be installed to compile.
+
+There are also a series of test programs under the tests/regression
+directory that are used to ensure the different variants of functions
+are working correctly.
+
+NCI Raijin Compilation
+----------------------
+
+On the NCI Raijin supercomputer, using the default OpenMPI module is 
+recommended. The following sequence of commands will install the RJMCMC
+library to the $HOME/install directory. This can be modified as required.
+
+> cd <path to RJMCMC>/RJMCMC-xx.yy.zz
+> module load openmpi
+> ./configure --prefix=$HOME/install
+> make
+> make install
+
+Applications that use the RJMCMC library can then be installed as follows:
+
+> cd <path to APP>/APP-xx.yy.zz
+> export PKG_CONFIG_PATH=$HOME/install/lib/pkgconfig
+> ./configure --prefix=$HOME/install
+> make
+> make install
+
+Terrawulf Compilation
+---------------------
+
+This is similar to NCI Raijin however it may be necessary to use the "module"
+command to make appropriate versions of the compilers and MPI available.
+
+                                ---
