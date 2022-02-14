@@ -1,6 +1,6 @@
 # ANU Inversion Course Package
 
-This package contains resources to be used in the inversion course practicals.
+This package contains resources to be used in the [inversion course practicals](https://github.com/anu-ilab/JupyterPracticals).
 
 ## Installation (experimental stage)
 
