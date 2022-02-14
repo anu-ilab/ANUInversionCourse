@@ -12,6 +12,8 @@
 #include <rjmcmc/dataset1d.h>
 #include <rjmcmc/rjmcmc_util.h>
 #include <rjmcmc/curvefit.h>
+#include "rjmcmc/rjmcmc_debug.h"
+
 
 static double single1d_init(void *arg);
 static int single1d_select(void *arg);

@@ -60,10 +60,14 @@ resultset2d_sample_centre(resultset2d_t *r,
 			  double x,
 			  double y);
 
+// void 
+// resultset2d_sample_sigma(resultset2d_t *r,
+// 			 int i,
+// 			 double sigma);
 void 
-resultset2d_sample_sigma(resultset2d_t *r,
+resultset2d_sample_lambda(resultset2d_t *r,
 			 int i,
-			 double sigma);
+			 double lambda);
 
 void
 resultset2d_sample_npartitions(resultset2d_t *r,
