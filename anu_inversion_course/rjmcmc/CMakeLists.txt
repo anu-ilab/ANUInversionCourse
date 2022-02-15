@@ -8,7 +8,7 @@ find_package(PythonLibs)
 include_directories(${PYTHON_INCLUDE_PATH})
 
 # metadata
-set(SWIG_MODULE_NAME_RJMCMC "rjmcmc")
+set(swig_module_name_rjmcmc "rjmcmc")
 set(swig_python_setup_rjmcmc "${CMAKE_CURRENT_SOURCE_DIR}/python/swig/setup.py")
 set(swig_interface_file_rjmcmc "${CMAKE_CURRENT_SOURCE_DIR}/python/swig/rjmcmc.i")
 set(swig_helper_file_rjmcmc "${CMAKE_CURRENT_SOURCE_DIR}/python/swig/rjmcmc_helper.c")
