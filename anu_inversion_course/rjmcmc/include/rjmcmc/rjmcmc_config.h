@@ -89,87 +89,87 @@
 
 // ====================== BEGIN CMAKE ==========================================
 /* Define to 1 if you have the <assert.h> header file. */
-#cmakedefine HAVE_ASSERT_H ${HAVE_ASSERT_H}
+/* #undef HAVE_ASSERT_H */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
-#cmakedefine HAVE_DLFCN_H ${HAVE_DLFCN_H}
+/* #undef HAVE_DLFCN_H */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#cmakedefine HAVE_INTTYPES_H ${HAVE_INTTYPES_H}
+/* #undef HAVE_INTTYPES_H */
 
 /* Define to 1 if you have the `m' library (-lm). */
-#cmakedefine HAVE_LIBM ${HAVE_LIBM}
+/* #undef HAVE_LIBM */
 
 /* Define if you have libmpi */
-#cmakedefine HAVE_LIBMPI ${HAVE_LIBMPI}
+/* #undef HAVE_LIBMPI */
 
 /* Define to 1 if you have the `log' function. */
-#cmakedefine HAVE_LOG ${HAVE_LOG}
+/* #undef HAVE_LOG */
 
 /* Define to 1 if your system has a GNU libc compatible `malloc' function, and
    to 0 otherwise. */
-#cmakedefine HAVE_MALLOC ${HAVE_MALLOC}
+/* #undef HAVE_MALLOC */
 
 /* Define to 1 if you have the <math.h> header file. */
-#cmakedefine HAVE_MATH_H ${HAVE_MATH_H}
+/* #undef HAVE_MATH_H */
 
 /* Define to 1 if you have the <memory.h> header file. */
-#cmakedefine HAVE_MEMORY_H ${HAVE_MEMORY_H}
+/* #undef HAVE_MEMORY_H */
 
 /* Define to 1 if you have the <mpi.h> header file. */
-#cmakedefine HAVE_MPI_H ${HAVE_MPI_H}
+/* #undef HAVE_MPI_H */
 
 /* Define to 1 if you have the `sqrt' function. */
-#cmakedefine HAVE_SQRT ${HAVE_SQRT}
+/* #undef HAVE_SQRT */
 
 /* Define to 1 if you have the <stdint.h> header file. */
-#cmakedefine HAVE_STDINT_H ${HAVE_STDINT_H}
+/* #undef HAVE_STDINT_H */
 
 /* Define to 1 if you have the <stdlib.h> header file. */
-#cmakedefine HAVE_STDLIB_H ${HAVE_STDLIB_H}
+/* #undef HAVE_STDLIB_H */
 
 /* Define to 1 if you have the <strings.h> header file. */
-#cmakedefine HAVE_STRINGS_H ${HAVE_STRINGS_H}
+/* #undef HAVE_STRINGS_H */
 
 /* Define to 1 if you have the <string.h> header file. */
-#cmakedefine HAVE_STRING_H ${HAVE_STRING_H}
+/* #undef HAVE_STRING_H */
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
-#cmakedefine HAVE_SYS_STAT_H ${HAVE_SYS_STAT_H}
+/* #undef HAVE_SYS_STAT_H */
 
 /* Define to 1 if you have the <sys/types.h> header file. */
-#cmakedefine HAVE_SYS_TYPES_H ${HAVE_SYS_TYPES_H}
+/* #undef HAVE_SYS_TYPES_H */
 
 /* Define to 1 if you have the <unistd.h> header file. */
-#cmakedefine HAVE_UNISTD_H ${HAVE_UNISTD_H}
+/* #undef HAVE_UNISTD_H */
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
-#cmakedefine LT_OBJDIR "${LT_OBJDIR}"
+/* #undef LT_OBJDIR */
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
-#cmakedefine NO_MINUS_C_MINUS_O ${NO_MINUS_C_MINUS_O}
+/* #undef NO_MINUS_C_MINUS_O */
 
 /* Define to the address where bug reports for this package should be sent. */
-#cmakedefine PACKAGE_BUGREPORT "${PACKAGE_BUGREPORT}"
+/* #undef PACKAGE_BUGREPORT */
 
 /* Define to the full name of this package. */
-#cmakedefine PACKAGE_NAME "@SWIG_MODULE_NAME_RJMCMC@"
+/* #undef PACKAGE_NAME */
 
 /* Define to the full name and version of this package. */
-#cmakedefine PACKAGE_STRING "${PACKAGE_STRING}"
+/* #undef PACKAGE_STRING */
 
 /* Define to the one symbol short name of this package. */
-#cmakedefine PACKAGE_TARNAME "${PACKAGE_TARNAME}"
+/* #undef PACKAGE_TARNAME */
 
 /* Define to the home page for this package. */
-#cmakedefine PACKAGE_URL "${PACKAGE_URL}"
+/* #undef PACKAGE_URL */
 
 /* Define to the version of this package. */
-#cmakedefine PACKAGE_VERSION "${PACKAGE_VERSION}"
+/* #undef PACKAGE_VERSION */
 
 /* Define to 1 if you have the ANSI C header files. */
-#cmakedefine STDC_HEADERS ${STDC_HEADERS}
+/* #undef STDC_HEADERS */
 
 /* Define to rpl_malloc if the replacement function should be used. */
-// #cmakedefine malloc
+/* #undef malloc */
