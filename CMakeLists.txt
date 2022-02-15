@@ -10,6 +10,8 @@ find_package(NumPy REQUIRED)
 find_package(F2PY REQUIRED)
 find_package(SWIG REQUIRED)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+
 # Add proper -fPIC and MINGW handling
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if (NOT MINGW)

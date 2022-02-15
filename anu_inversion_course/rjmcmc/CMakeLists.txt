@@ -21,7 +21,6 @@ file(GLOB rjmcmc_src
     "src/*.c"
 )
 
-set_source_files_properties(${swig_interface_file_rjmcmc} PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(${swig_interface_file_rjmcmc} PROPERTIES SWIG_FLAGS "-includeall")
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/rjmcmc/rjmcmc_config.h.in
@@ -37,28 +36,10 @@ target_include_directories(${swig_module_name_rjmcmc} PRIVATE ${CMAKE_CURRENT_SO
 target_include_directories(${swig_module_name_rjmcmc} PRIVATE ${PYTHON_INCLUDE_PATH})
 target_link_libraries(${swig_module_name_rjmcmc} ${PYTHON_LIBRARIES})
 python_extension_module(${swig_module_name_rjmcmc})
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lpython")
 install(TARGETS ${swig_module_name_rjmcmc} LIBRARY DESTINATION anu_inversion_course/rjmcmc/python/swig)
-
-
-# set(generated_module_file_rjmcmc ${CMAKE_CURRENT_BINARY_DIR}/${swig_module_name_rjmcmc}${PYTHON_EXTENSION_MODULE_SUFFIX})
-# add_custom_target(${swig_module_name_rjmcmc} ALL DEPENDS ${generated_module_file_rjmcmc})
-# add_custom_command(
-#     OUTPUT ${generated_module_file_rjmcmc}
-#     COMMAND ${PYTHON_EXECUTABLE}
-#         ${swig_python_setup_rjmcmc}
-# )
-# install(FILES ${generated_module_file_rjmcmc} DESTINATION anu_inversion_course)
 
 # $ swig -python example.i
 # $ gcc -O2 -fPIC -c example.c
 # $ gcc -O2 -fPIC -c example_wrap.c -I/usr/local/include/python2.5
 # $ gcc -shared example.o example_wrap.o -o _example.so
-
-# include_directories(python/swig)
-# include_directories(include)
-# include_directories(src)
-
-# swig_add_library(rjmcmc TYPE MODULE LANGUAGE python SOURCES python/swig/rjmcmc.i)
-# python_extension_module(rjmcmc)
-# # swig_link_libraries(rjmcmc ${PYTHON_LIBRARIES})
-# install(TARGETS rjmcmc DESTINATION anu_inversion_course)
