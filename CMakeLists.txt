@@ -8,6 +8,7 @@ find_package(PythonExtensions REQUIRED)
 find_package(Cython REQUIRED)
 find_package(NumPy REQUIRED)
 find_package(F2PY REQUIRED)
+find_package(SWIG REQUIRED)
 
 # Add proper -fPIC and MINGW handling
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -51,3 +52,4 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Compiled Extensions
 ################################################################################
 add_subdirectory(anu_inversion_course/rfc)
+add_subdirectory(anu_inversion_course/rjmcmc)
