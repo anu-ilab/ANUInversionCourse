@@ -11,8 +11,6 @@
 #include <rjmcmc/part1d_natural_rj.h>
 #include <rjmcmc/dataset1d.h>
 #include <rjmcmc/rjmcmc_util.h>
-#include "rjmcmc/rjmcmc_debug.h"
-
 
 static double part1d_init(void *arg);
 static int part1d_select(void *arg);
