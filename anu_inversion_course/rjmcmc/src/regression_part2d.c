@@ -11,6 +11,7 @@
 #include <rjmcmc/part2d_regression_rj.h>
 #include <rjmcmc/dataset2d.h>
 #include <rjmcmc/rjmcmc_util.h>
+#include <rjmcmc/rjmcmc_debug.h>
 
 static double part2d_init(void *arg);
 static int part2d_select(void *arg);
