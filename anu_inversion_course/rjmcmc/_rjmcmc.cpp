@@ -16,8 +16,8 @@ void hello() {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(rjmcmc, m) {
-    m.doc() = "rjmcmc";
+PYBIND11_MODULE(_rjmcmc, m) {
+    m.doc() = "Reversible Jump McMC";
     m.def("hello", &hello, "Prints \"Hello, world!\"");
     py::class_<_dataset1d>(m, "_dataset1d")
         .def_readwrite("xmin", &_dataset1d::xmin)
