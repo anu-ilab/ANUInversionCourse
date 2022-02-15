@@ -16,6 +16,7 @@ set(swig_python_file_rjmcmc "${CMAKE_CURRENT_SOURCE_DIR}/python/swig/rjmcmc.py")
 file(GLOB rjmcmc_src
     "python/swig/rjmcmc_helper.h"
     "python/swig/rjmcmc_helper.c"
+    "python/swig/rjmcmc_wrap.c"
     "include/*.h"
     "src/*.c"
 )
