@@ -5,6 +5,6 @@ file(GLOB rjmcmc_src
     "python/swig/rjmcmc_helper.c"
     "src/*.c"
 )
-pybind11_add_module(${pybind11_module_name_rjmcmc} ${rjmcmc_src})
+pybind11_add_module(${pybind11_module_name_rjmcmc} SHARED ${rjmcmc_src})
 target_include_directories(${pybind11_module_name_rjmcmc} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 install(TARGETS ${pybind11_module_name_rjmcmc} LIBRARY DESTINATION anu_inversion_course)

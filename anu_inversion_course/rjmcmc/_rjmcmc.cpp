@@ -1,13 +1,22 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-// #include "python/swig/rjmcmc.i"
-#include "python/swig/rjmcmc_helper.h"
+#include <iostream>
 
 
 void hello() {
     std::cout << "Hello, world!" << std::endl;
 }
+
+extern "C" {
+    #include "include/rjmcmc/dataset1d.h"
+    // dataset1d_t *dataset1d_load_known(const char*);
+}
+
+// int main() {
+//     dataset1d_load_known("../data.txt");
+//     std::cout << "yeah" << std::endl;
+// }
 
 
 // ----------------
@@ -19,46 +28,21 @@ namespace py = pybind11;
 PYBIND11_MODULE(_rjmcmc, m) {
     m.doc() = "Reversible Jump McMC";
     m.def("hello", &hello, "Prints \"Hello, world!\"");
-    py::class_<_dataset1d>(m, "_dataset1d")
-        .def_readwrite("xmin", &_dataset1d::xmin)
-        .def_readwrite("xmax", &_dataset1d::xmax)
-        .def_readwrite("ymin", &_dataset1d::ymin)
-        .def_readwrite("ymax", &_dataset1d::ymax)
-        .def_readwrite("points", &_dataset1d::points)
-        .def_readwrite("npoints", &_dataset1d::npoints)
-        .def_readwrite("lambdamin", &_dataset1d::lambdamin)
-        .def_readwrite("lambdamax", &_dataset1d::lambdamax)
-        .def_readwrite("lambdastd", &_dataset1d::lambdastd)
-        .def("get_xmin", [](_dataset1d &d) {
+    py::class_<dataset1d_t>(m, "dataset1d_t")
+        .def(py::init<>())
+        .def_readwrite("xmin", &dataset1d_t::xmin)
+        .def_readwrite("xmax", &dataset1d_t::xmax)
+        .def_readwrite("ymin", &dataset1d_t::ymin)
+        .def_readwrite("ymax", &dataset1d_t::ymax)
+        .def_readwrite("points", &dataset1d_t::points)
+        .def_readwrite("npoints", &dataset1d_t::npoints)
+        .def_readwrite("lambdamin", &dataset1d_t::lambdamin)
+        .def_readwrite("lambdamax", &dataset1d_t::lambdamax)
+        .def_readwrite("lambdastd", &dataset1d_t::lambdastd)
+        .def("get_xmin", [](dataset1d_t &d) {
             return d.xmin;
         });
+    m.def("dataset1d_load_known", &dataset1d_load_known, "Load a 1D dataset from given file name");
 
     // m.def("regression_single1d", &regression_single1d, "Performs single");
 }
-
-
-// class Example {
-// private:
-//     Example(int); // private constructor
-// public:
-//     // Factory function - returned by value:
-//     static Example create(int a) { return Example(a); }
-
-//     // These constructors are publicly callable:
-//     Example(double);
-//     Example(int, int);
-//     Example(std::string);
-// };
-
-// py::class_<Example>(m, "Example")
-//     // Bind the factory function as a constructor:
-//     .def(py::init(&Example::create))
-//     // Bind a lambda function returning a pointer wrapped in a holder:
-//     .def(py::init([](std::string arg) {
-//         return std::unique_ptr<Example>(new Example(arg));
-//     }))
-//     // Return a raw pointer:
-//     .def(py::init([](int a, int b) { return new Example(a, b); }))
-//     // You can mix the above with regular C++ constructor bindings as well:
-//     .def(py::init<double>())
-//     ;
