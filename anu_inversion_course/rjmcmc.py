@@ -4,7 +4,21 @@ from anu_inversion_course._rjmcmc import (
     dataset1d_load_fixed,
     dataset1d_create,
     py_dataset1d_get_points,
+    py_dataset1d_set_points,
     resultset1d_t,
+    py_resultset1d_get_propose,
+    py_resultset1d_get_accept,
+    py_resultset1d_get_partitions,
+    py_resultset1d_get_order,
+    py_resultset1d_get_partition_hist,
+    py_resultset1d_get_partition_x_histogram,
+    py_resultset1d_get_mean,
+    py_resultset1d_get_median,
+    py_resultset1d_get_mode,
+    py_resultset1d_get_credible_min,
+    py_resultset1d_get_credible_max,
+    py_resultset1d_get_misfit,
+    py_resultset1d_get_lambda,
     py_resultset1d_get_histogram,
     resultset1dfm_t,
     resultset1dfm_get_global_parameter,
@@ -45,7 +59,7 @@ class dataset1d:
                 points[i].x = x[i]
                 points[i].y = y[i]
                 points[i].n = n[i]
-            self.d.points = points[0]
+            py_dataset1d_set_points(self.d, points)
             self.d.xmin = np.min(x)
             self.d.xmax = np.max(x)
             self.d.ymin = np.min(y)
@@ -94,22 +108,22 @@ class resultset1d:
         self.r = resultset1d_t
 
     def proposed(self):
-        return self.r.propose
+        return py_resultset1d_get_propose(self.r)
             
     def acceptance(self):
-        return self.r.accept
+        return py_resultset1d_get_accept(self.r)
 
     def partitions(self):
-        return self.r.partitions
+        return py_resultset1d_get_partitions(self.r)
 
     def order_histogram(self):
-        return self.r.order
+        return py_resultset1d_get_order(self.r)
 
     def partition_histogram(self):
-        return self.r.partitions
+        return py_resultset1d_get_partition_hist(self.r)
 
     def partition_location_histogram(self):
-        return self.r.partition_x_hist
+        return py_resultset1d_get_partition_x_histogram
 
     def x(self):
         n_xsamples = self.r.xsamples
@@ -126,25 +140,25 @@ class resultset1d:
         return y_vector
 
     def mean(self):
-        return self.r.mean
+        return py_resultset1d_get_mean(self.r)
 
     def median(self):
-        return self.r.median
+        return py_resultset1d_get_median(self.r)
 
     def mode(self):
-        return self.r.mode
+        return py_resultset1d_get_mode(self.r)
 
     def credible_min(self):
-        return self.r.conf_min
+        return py_resultset1d_get_credible_min(self.r)
 
     def credible_max(self):
-        return self.r.conf_max
+        return py_resultset1d_get_credible_max(self.r)
 
     def misfit(self):
-        return self.r.misfit
+        return py_resultset1d_get_misfit(self.r)
 
     def lambda_history(self):
-        return self.r.getattr("lambda")
+        return py_resultset1d_get_lambda(self.r)
 
     def histogram(self):
         return py_resultset1d_get_histogram(self.r)
@@ -198,9 +212,7 @@ class resultset1dfm:
 
 
 def regression_single1d(dataset, burnin=10000, total=50000, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
-    print(type(dataset))
     res = py_regression_single1d(dataset.d, burnin, total, max_order, xsamples, ysamples, credible_interval)
-    print(type(res))
     return resultset1d(res.r)
 
 def check_list_like(x):

@@ -13,22 +13,105 @@ extern "C" {
     #include "python/swig/rjmcmc_helper.h"
 }
 
-PyObject *py_resultset1d_get_histogram(resultset1d_t *r) {
-    const int **hist = resultset1d_get_histogram(r);
-    PyObject *res;
-    res = pyrjmcmc_make_int_list_2d(hist, r->xsamples, r->ysamples);
-    return res;
-}
-
+// ------------ BEGIN dataset1d_t ---------------------------------
 std::vector<point1d_t> py_dataset1d_get_points(dataset1d_t *d) {
     std::vector<point1d_t> res(d->points, d->points+d->npoints);
     return res;
 }
+void py_dataset1d_set_points(dataset1d_t *d, std::vector<point1d_t> points) {
+    d->points = &points[0];
+}
 
+// ------------ BEGIN resultset1d_t ---------------------------------
+std::vector<int> py_resultset1d_get_propose(resultset1d_t *r) {
+    int na;
+    const int *a = resultset1d_get_propose(r, &na);
+    std::vector<int> res(a, a+na);
+    return res;
+}
+std::vector<int> py_resultset1d_get_accept(resultset1d_t *r) {
+    int na;
+    const int *a = resultset1d_get_accept(r, &na);
+    std::vector<int> res(a, a+na);
+    return res;
+}
+std::vector<int> py_resultset1d_get_partitions(resultset1d_t *r) {
+    const int *partitions = resultset1d_get_partitions(r);
+    std::vector<int> res(partitions, partitions+resultset1d_get_total(r));
+    return res;
+}
+std::vector<int> py_resultset1d_get_order(resultset1d_t *r) {
+    const int *order_hist = resultset1d_get_order(r);
+    std::vector<int> res(order_hist, order_hist+resultset1d_get_max_order(r));
+    return res;
+}
+std::vector<int> py_resultset1d_get_partition_hist(resultset1d_t *r) {
+    const int *partitions = resultset1d_get_partitions(r);
+    int mp = resultset1d_get_max_partitions(r);
+    int n = resultset1d_get_total(r);
+    std::vector<int> res(mp+1, 0);
+    for (int i = 0; i < n; i++) res[partitions[i]]++;
+    return res;
+}
+std::vector<int> py_resultset1d_get_partition_x_histogram(resultset1d_t *r) {
+    const int *part_hist = resultset1d_get_partition_x_histogram(r);
+    int n = resultset1d_get_xsamples(r);
+    std::vector<int> res(part_hist, part_hist+n);
+    return res;
+}
+std::vector<double> py_resultset1d_get_mean(resultset1d_t *r) {
+    const double *mean = r->mean;
+    std::vector<double> res(mean, mean+r->xsamples);
+    return res;
+}
+std::vector<double> py_resultset1d_get_median(resultset1d_t *r) {
+    const double *median = resultset1d_get_median(r);
+    std::vector<double> res(median, median+r->xsamples);
+    return res;
+}
+std::vector<double> py_resultset1d_get_mode(resultset1d_t *r) {
+    const double *mode = resultset1d_get_mode(r);
+    std::vector<double> res(mode, mode+r->xsamples);
+    return res;
+}
+std::vector<double> py_resultset1d_get_credible_min(resultset1d_t *r) {
+    const double *credible_min = resultset1d_get_credible_min(r);
+    std::vector<double> res(credible_min, credible_min+r->xsamples);
+    return res;
+}
+std::vector<double> py_resultset1d_get_credible_max(resultset1d_t *r) {
+    const double *credible_max = resultset1d_get_credible_max(r);
+    std::vector<double> res(credible_max, credible_max+r->xsamples);
+    return res;
+}
+std::vector<double> py_resultset1d_get_misfit(resultset1d_t *r) {
+    const double *misfit = resultset1d_get_misfit(r);
+    std::vector<double> res(misfit, misfit+r->total);
+    return res;
+}
+std::vector<double> py_resultset1d_get_lambda(resultset1d_t *r) {
+    const double *lambda = resultset1d_get_lambda(r);
+    std::vector<double> res(lambda, lambda+r->total);
+    return res;
+}
+std::vector<std::vector<int>> py_resultset1d_get_histogram(resultset1d_t *r) {
+    const int **hist = resultset1d_get_histogram(r);
+    std::vector<std::vector<int>> res;
+    for (int i = 0; i < r->xsamples; i++) {
+        std::vector<int> row;
+        for (int j = 0; j < r->ysamples; j++) {
+            row.push_back(hist[i][j]);
+        }
+        res.push_back(row);
+    }
+    return res;
+}
+
+// ------------ BEGIN single partition ---------------------------------
 resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) {
-    dataset1d *d;
-    d->d = dataset;
-    return regression_single1d(d, burnin, total, max_order, xsamples, ysamples, credible_interval);
+    dataset1d d;
+    d.d = dataset;
+    return regression_single1d(&d, burnin, total, max_order, xsamples, ysamples, credible_interval);
 }
 
 // ----------------
@@ -61,12 +144,17 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("dataset1d_load_fixed", &dataset1d_load_fixed, "Loads a 1D dataset from given file name, and applies a fixed noise level to each data point");
     m.def("dataset1d_create", &dataset1d_create, "Create a new empty dataset");
     m.def("py_dataset1d_get_points", &py_dataset1d_get_points);
+    m.def("py_dataset1d_set_points", &py_dataset1d_set_points);
 
     // ------------ BEGIN point1d_t ---------------------------------
     py::class_<point1d_t>(m, "point1d_t")
         .def_readwrite("x", &point1d_t::x)
         .def_readwrite("y", &point1d_t::y)
         .def_readwrite("n", &point1d_t::n);
+
+    // ------------ BEGIN point1d_t ---------------------------------
+    py::class_<resultset1d>(m, "c_resultset1d")
+        .def_readwrite("r", &resultset1d::r);
    
     // ------------ BEGIN resultset1d_t ---------------------------------
     py::class_<resultset1d_t>(m, "resultset1d_t")
@@ -103,6 +191,19 @@ PYBIND11_MODULE(_rjmcmc, m) {
         // .def_readwrite("gradient_hist", &resultset1d_t::gradient_hist)
         .def_readwrite("gradient_conf_min", &resultset1d_t::gradient_conf_min)
         .def_readwrite("gradient_conf_max", &resultset1d_t::gradient_conf_max);
+    m.def("py_resultset1d_get_propose", &py_resultset1d_get_propose);
+    m.def("py_resultset1d_get_accept", &py_resultset1d_get_accept);
+    m.def("py_resultset1d_get_partitions", &py_resultset1d_get_partitions);
+    m.def("py_resultset1d_get_order", &py_resultset1d_get_order);
+    m.def("py_resultset1d_get_partition_hist", &py_resultset1d_get_partition_hist);
+    m.def("py_resultset1d_get_partition_x_histogram", &py_resultset1d_get_partition_x_histogram);
+    m.def("py_resultset1d_get_mean", &py_resultset1d_get_mean);
+    m.def("py_resultset1d_get_median", &py_resultset1d_get_median);
+    m.def("py_resultset1d_get_mode", &py_resultset1d_get_mode);
+    m.def("py_resultset1d_get_credible_min", &py_resultset1d_get_credible_min);
+    m.def("py_resultset1d_get_credible_max", &py_resultset1d_get_credible_max);
+    m.def("py_resultset1d_get_misfit", &py_resultset1d_get_misfit);
+    m.def("py_resultset1d_get_lambda", &py_resultset1d_get_lambda);
     m.def("py_resultset1d_get_histogram", &py_resultset1d_get_histogram);
     
     // // ------------ BEGIN resultset1dfm_t ---------------------------------
