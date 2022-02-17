@@ -3,10 +3,12 @@ from anu_inversion_course._rjmcmc import (
     dataset1d_load_known,
     dataset1d_load_fixed,
     dataset1d_create,
+    py_dataset1d_get_points,
     resultset1d_t,
     py_resultset1d_get_histogram,
-    # resultset1dfm_t,
+    resultset1dfm_t,
     resultset1dfm_get_global_parameter,
+    py_regression_single1d,
 )
 
 import collections
@@ -38,14 +40,12 @@ class dataset1d:
                 raise ValueError("All values in the n array must be greater than zero")
             # ####### END VALIDATION #######
             self.d = dataset1d_create(x.shape[0])
+            points = py_dataset1d_get_points(self.d)
             for i in range(x.shape[0]):
-                print(type(x[i]))
-                print(type(self.d.points))
-                print(type(self.d.points[i]))
-                print(type(self.d.points[i].x))
-                self.d.points[i].x = x[i]
-                self.d.points[i].y = y[i]
-                self.d.points[i].n = n[i]
+                points[i].x = x[i]
+                points[i].y = y[i]
+                points[i].n = n[i]
+            self.d.points = points[0]
             self.d.xmin = np.min(x)
             self.d.xmax = np.max(x)
             self.d.ymin = np.min(y)
@@ -196,6 +196,12 @@ class resultset1dfm:
     def global_parameter(self, gi):
         return resultset1dfm_get_global_parameter(self.r, gi)
 
+
+def regression_single1d(dataset, burnin=10000, total=50000, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
+    print(type(dataset))
+    res = py_regression_single1d(dataset.d, burnin, total, max_order, xsamples, ysamples, credible_interval)
+    print(type(res))
+    return resultset1d(res.r)
 
 def check_list_like(x):
     return isinstance(x, collections.abc.Iterable) and not isinstance(x, (str, bytes))

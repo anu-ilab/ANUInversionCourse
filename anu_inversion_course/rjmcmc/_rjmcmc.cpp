@@ -20,6 +20,17 @@ PyObject *py_resultset1d_get_histogram(resultset1d_t *r) {
     return res;
 }
 
+std::vector<point1d_t> py_dataset1d_get_points(dataset1d_t *d) {
+    std::vector<point1d_t> res(d->points, d->points+d->npoints);
+    return res;
+}
+
+resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) {
+    dataset1d *d;
+    d->d = dataset;
+    return regression_single1d(d, burnin, total, max_order, xsamples, ysamples, credible_interval);
+}
+
 // ----------------
 // Python interface
 // ----------------
@@ -49,6 +60,7 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("dataset1d_load_known", &dataset1d_load_known, "Loads a 1D dataset from given file name");
     m.def("dataset1d_load_fixed", &dataset1d_load_fixed, "Loads a 1D dataset from given file name, and applies a fixed noise level to each data point");
     m.def("dataset1d_create", &dataset1d_create, "Create a new empty dataset");
+    m.def("py_dataset1d_get_points", &py_dataset1d_get_points);
 
     // ------------ BEGIN point1d_t ---------------------------------
     py::class_<point1d_t>(m, "point1d_t")
@@ -130,9 +142,6 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("resultset1dfm_get_global_parameter", &resultset1dfm_get_global_parameter);
     
     // ------------ BEGIN single partition ---------------------------------
-    m.def("regression_single1d", &regression_single1d);
-    m.def("regression_single1d_sampled", &regression_single1d_sampled);
-
-    // m.def("add", &add, "A function which adds two numbers",
-    //   py::arg("i") = 1, py::arg("j") = 2); 
+    m.def("py_regression_single1d", &py_regression_single1d);
+    m.def("c_regression_single1d_sampled", &regression_single1d_sampled);
 }
