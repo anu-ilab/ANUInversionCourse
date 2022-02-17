@@ -6,6 +6,7 @@ from anu_inversion_course._rjmcmc import (
     resultset1d_t,
     py_resultset1d_get_histogram,
     # resultset1dfm_t,
+    resultset1dfm_get_global_parameter,
 )
 
 import collections
@@ -13,12 +14,18 @@ import numpy as np
 
 
 class dataset1d:
-    def __init__(self, filename=None, n=None, x=None, y=None):
-        if filename is not None and n is None:
+    def __init__(self, *args):
+        if len(args) == 1:
+            filename = args[0]
             self.d = dataset1d_load_known(filename)
-        elif filename is not None and n is not None:
+        elif len(args) == 2:
+            filename = args[0]
+            n = args[1]
             self.d = dataset1d_load_fixed(filename, n)
-        elif x is not None and y is not None and n is not None:
+        elif len(args) == 3:
+            x = args[0]
+            y = args[1]
+            n = args[2]
             # ####### INPUT VALIDATION #######
             if not check_list_like(x) or not check_list_like(y) or not check_list_like(n):
                 raise ValueError("Parameter must be a list of floating point values")
@@ -32,6 +39,10 @@ class dataset1d:
             # ####### END VALIDATION #######
             self.d = dataset1d_create(x.shape[0])
             for i in range(x.shape[0]):
+                print(type(x[i]))
+                print(type(self.d.points))
+                print(type(self.d.points[i]))
+                print(type(self.d.points[i].x))
                 self.d.points[i].x = x[i]
                 self.d.points[i].y = y[i]
                 self.d.points[i].n = n[i]
@@ -183,8 +194,7 @@ class resultset1dfm:
         return self.r.misfit 
     
     def global_parameter(self, gi):
-        return self.r.getattr("global")[gi]
-
+        return resultset1dfm_get_global_parameter(self.r, gi)
 
 
 def check_list_like(x):

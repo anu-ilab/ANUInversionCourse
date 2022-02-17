@@ -20,7 +20,6 @@ PyObject *py_resultset1d_get_histogram(resultset1d_t *r) {
     return res;
 }
 
-
 // ----------------
 // Python interface
 // ----------------
@@ -50,6 +49,12 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("dataset1d_load_known", &dataset1d_load_known, "Loads a 1D dataset from given file name");
     m.def("dataset1d_load_fixed", &dataset1d_load_fixed, "Loads a 1D dataset from given file name, and applies a fixed noise level to each data point");
     m.def("dataset1d_create", &dataset1d_create, "Create a new empty dataset");
+
+    // ------------ BEGIN point1d_t ---------------------------------
+    py::class_<point1d_t>(m, "point1d_t")
+        .def_readwrite("x", &point1d_t::x)
+        .def_readwrite("y", &point1d_t::y)
+        .def_readwrite("n", &point1d_t::n);
    
     // ------------ BEGIN resultset1d_t ---------------------------------
     py::class_<resultset1d_t>(m, "resultset1d_t")
@@ -89,38 +94,40 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("py_resultset1d_get_histogram", &py_resultset1d_get_histogram);
     
     // // ------------ BEGIN resultset1dfm_t ---------------------------------
-    // py::class_<resultset1dfm_t>(m, "resultset1dfm_t")
-    //     .def(py::init<>())
-    //     .def_readwrite("results", &resultset1dfm_t::results)
-    //     .def_readwrite("burnin", &resultset1dfm_t::burnin)
-    //     .def_readwrite("total", &resultset1dfm_t::total)
-    //     .def_readwrite("xsamples", &resultset1dfm_t::xsamples)
-    //     .def_readwrite("ysamples", &resultset1dfm_t::ysamples)
-    //     .def_readwrite("nglobalparameters", &resultset1dfm_t::nglobalparameters)
-    //     .def_readwrite("global_parameters", &resultset1dfm_t::global_parameters)
-    //     .def_readwrite("nlocalparameters", &resultset1dfm_t::nlocalparameters)
-    //     .def_readwrite("local_parameters", &resultset1dfm_t::local_parameters)
-    //     .def_readwrite("maxpartitions", &resultset1dfm_t::maxpartitions)
-    //     .def_readwrite("xmin", &resultset1dfm_t::xmin)
-    //     .def_readwrite("xmax", &resultset1dfm_t::xmax)
-    //     .def_readwrite("nprocesses", &resultset1dfm_t::nprocesses)
-    //     .def_readwrite("propose", &resultset1dfm_t::propose)
-    //     .def_readwrite("accept", &resultset1dfm_t::accept)
-    //     .def_readwrite("propose_local", &resultset1dfm_t::propose_local)
-    //     .def_readwrite("accept_local", &resultset1dfm_t::accept_local)
-    //     .def_readwrite("misfit", &resultset1dfm_t::misfit)
-    //     .def_readwrite("partitions", &resultset1dfm_t::partitions)
-    //     .def_readwrite("partition_x_hist", &resultset1dfm_t::partition_x_hist)
+    py::class_<resultset1dfm_t>(m, "resultset1dfm_t")
+        .def(py::init<>())
+        .def_readwrite("results", &resultset1dfm_t::results)
+        .def_readwrite("burnin", &resultset1dfm_t::burnin)
+        .def_readwrite("total", &resultset1dfm_t::total)
+        .def_readwrite("xsamples", &resultset1dfm_t::xsamples)
+        .def_readwrite("ysamples", &resultset1dfm_t::ysamples)
+        .def_readwrite("nglobalparameters", &resultset1dfm_t::nglobalparameters)
+        .def_readwrite("global_parameters", &resultset1dfm_t::global_parameters)
+        .def_readwrite("nlocalparameters", &resultset1dfm_t::nlocalparameters)
+        .def_readwrite("local_parameters", &resultset1dfm_t::local_parameters)
+        .def_readwrite("maxpartitions", &resultset1dfm_t::maxpartitions)
+        .def_readwrite("xmin", &resultset1dfm_t::xmin)
+        .def_readwrite("xmax", &resultset1dfm_t::xmax)
+        .def_readwrite("nprocesses", &resultset1dfm_t::nprocesses)
+        .def_readwrite("propose", &resultset1dfm_t::propose)
+        .def_readwrite("accept", &resultset1dfm_t::accept)
+        .def_readwrite("propose_local", &resultset1dfm_t::propose_local)
+        .def_readwrite("accept_local", &resultset1dfm_t::accept_local)
+        .def_readwrite("misfit", &resultset1dfm_t::misfit)
+        .def_readwrite("partitions", &resultset1dfm_t::partitions)
+        .def_readwrite("partition_x_hist", &resultset1dfm_t::partition_x_hist)
     //     .def_readwrite("global", &resultset1dfm_t::global)
     //     .def_readwrite("local_mean", &resultset1dfm_t::local_mean)
-    //     .def_readwrite("nhierarchical", &resultset1dfm_t::nhierarchical)
+        .def_readwrite("nhierarchical", &resultset1dfm_t::nhierarchical)
     //     .def_readwrite("hierarchical", &resultset1dfm_t::hierarchical)
     //     .def_readwrite("histogram", &resultset1dfm_t::histogram)
     //     .def_readwrite("local_median", &resultset1dfm_t::local_median)
     //     .def_readwrite("local_mode", &resultset1dfm_t::local_mode)
-    //     .def_readwrite("credible_interval", &resultset1dfm_t::credible_interval)
+        .def_readwrite("credible_interval", &resultset1dfm_t::credible_interval)
     //     .def_readwrite("local_cred_min", &resultset1dfm_t::local_cred_min)
-    //     .def_readwrite("local_cred_max", &resultset1dfm_t::local_cred_max);
+    //     .def_readwrite("local_cred_max", &resultset1dfm_t::local_cred_max)
+    ;
+    m.def("resultset1dfm_get_global_parameter", &resultset1dfm_get_global_parameter);
     
     // ------------ BEGIN single partition ---------------------------------
     m.def("regression_single1d", &regression_single1d);
