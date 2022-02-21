@@ -15,6 +15,88 @@ typedef enum {
   RESULTSET1DFM_CREDIBLE   = 0x08,
 } resultset1dfm_result_t;
 
+struct _resultset1dfm {
+
+  int results;
+
+  int burnin;
+  int total;
+
+  int xsamples;
+  int ysamples;
+
+  int nglobalparameters;
+  const forwardmodelparameter_t *global_parameters;
+
+  int nlocalparameters;
+  const forwardmodelparameter_t *local_parameters;
+
+  int maxpartitions;
+
+  double xmin;
+  double xmax;
+
+  int nprocesses;
+  int *propose;
+  int *accept;
+
+  int *propose_local;
+  int *accept_local;
+
+  /* 
+   * Misfit [total]
+   */
+  double *misfit;
+
+  /*
+   * N Partitions [total];
+   */
+  int *partitions;
+
+  /*
+   * Partition x histogram [xsamples]
+   */
+  int *partition_x_hist;
+
+  /*
+   * Global Parameter History [nglobalparameters][total];
+   */
+  double **global;
+
+  /*
+   * Local Parameter Mean(s) [nlocalparameters][xsamples]
+   */
+  double **local_mean;
+
+  /*
+   * Hierarchical parameter histories [nhierarchical][total]
+   */
+  int nhierarchical;
+  double **hierarchical;
+
+  /*
+   * Local Parameter Histogram [nlocalparameters][xsamples][ysamples]
+   * (only used if mode/median/credible requested)
+   */
+  int ***histogram;
+
+  /*
+   * Local median [nlocalparameters][xsamples]
+   */
+  double **local_median;
+  
+  /*
+   * Local mode [nlocalparameters][xsamples]
+   */
+  double **local_mode;
+
+  /*
+   * Credible intervals [nlocalparameters][xsamples]
+   */
+  double credible_interval;
+  double **local_cred_min;
+  double **local_cred_max;
+};
 typedef struct _resultset1dfm resultset1dfm_t;
 
 resultset1dfm_t *

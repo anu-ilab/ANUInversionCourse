@@ -16,6 +16,98 @@ typedef enum {
   RESULTSET1D_GRADIENT   = 0x10
 } resultset1d_result_t;
 
+struct _resultset1d {
+
+  int results;
+
+  int burnin;
+  int total;
+
+  int xsamples;
+  int ysamples;
+
+  int nprocesses;
+
+  int maxpartitions;
+  int maxorder;
+
+  double xmin;
+  double xmax;
+  double ymin;
+  double ymax;
+
+  double gradmin;
+  double gradmax;
+
+  int *propose;
+  int *accept;
+
+  /* 
+   * Misfit [total]
+   */
+  double *misfit;
+
+  /*
+   * Lambda [total]
+   */
+  double *lambda;
+
+  /*
+   * Order [maxorder + 1];
+   */
+  int *order;
+
+  /*
+   * N Partitions [total];
+   */
+  int *partitions;
+
+  /*
+   * Partition x histogram [xsamples]
+   */
+  int *partition_x_hist;
+
+  /*
+   * Mean [xsamples]
+   */
+  double *mean;
+
+  /*
+   * Hist [xsamples][ysamples]
+   */
+  int **hist;
+
+  /*
+   * Mode [xsamples]
+   */
+  double *mode;
+
+  /*
+   * Median [xsamples]
+   */
+  double *median;
+
+  /*
+   * Credible [xsamples] x2
+   */
+  double conf_interval;
+  double *conf_min;
+  double *conf_max;
+
+  /*
+   * Gradient [xsamples]
+   */
+  double *gradient;
+
+  /*
+   * Gradient Hist [xsamples][ysamples]
+   */
+  int **gradient_hist;
+
+  double *gradient_conf_min;
+  double *gradient_conf_max;
+
+};
 typedef struct _resultset1d resultset1d_t;
 
 resultset1d_t *
