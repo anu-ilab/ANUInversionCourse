@@ -5,21 +5,13 @@
 #include <iostream>
 
 
-void hello() {
-    std::cout << "Hello, world!" << std::endl;
-}
-
 extern "C" {
     #include "python/swig/rjmcmc_helper.h"
 }
 
 // ------------ BEGIN dataset1d_t ---------------------------------
-std::vector<point1d_t> py_dataset1d_get_points(dataset1d_t *d) {
-    std::vector<point1d_t> res(d->points, d->points+d->npoints);
-    return res;
-}
-void py_dataset1d_set_points(dataset1d_t *d, std::vector<point1d_t> points) {
-    d->points = &points[0];
+dataset1d_t *py_dataset1d_create_from_array(std::vector<double> x, std::vector<double> y, std::vector<double> n) {
+    return dataset1d_create_from_array(&x[0], &y[0], &n[0], x.size());
 }
 
 // ------------ BEGIN resultset1d_t ---------------------------------
@@ -61,6 +53,7 @@ std::vector<int> py_resultset1d_get_partition_x_histogram(resultset1d_t *r) {
 }
 std::vector<double> py_resultset1d_get_mean(resultset1d_t *r) {
     const double *mean = r->mean;
+    printf("%f\n", mean[10]);
     std::vector<double> res(mean, mean+r->xsamples);
     return res;
 }
@@ -111,6 +104,9 @@ std::vector<std::vector<int>> py_resultset1d_get_histogram(resultset1d_t *r) {
 resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) {
     dataset1d d;
     d.d = dataset;
+    for (int i = 0; i < 2; i++) {
+        printf("data point #%d: (%f %f)\n", i, dataset->points[i].x, dataset->points[i].y);
+    }
     return regression_single1d(&d, burnin, total, max_order, xsamples, ysamples, credible_interval);
 }
 
@@ -122,7 +118,6 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(_rjmcmc, m) {
     m.doc() = "Reversible Jump McMC";
-    m.def("hello", &hello, "Prints \"Hello, world!\"");
     m.def("rjmcmc_seed", &rjmcmc_seed, "Set random seed given an integer");
     
     // ------------ BEGIN dataset1d_t ---------------------------------
@@ -132,19 +127,15 @@ PYBIND11_MODULE(_rjmcmc, m) {
         .def_readwrite("xmax", &dataset1d_t::xmax)
         .def_readwrite("ymin", &dataset1d_t::ymin)
         .def_readwrite("ymax", &dataset1d_t::ymax)
-        .def_readwrite("points", &dataset1d_t::points)
+        // .def_readwrite("points", &dataset1d_t::points)
         .def_readwrite("npoints", &dataset1d_t::npoints)
         .def_readwrite("lambdamin", &dataset1d_t::lambdamin)
         .def_readwrite("lambdamax", &dataset1d_t::lambdamax)
         .def_readwrite("lambdastd", &dataset1d_t::lambdastd)
-        .def("get_xmin", [](dataset1d_t &d) {
-            return d.xmin;
-        });
+        ;
     m.def("dataset1d_load_known", &dataset1d_load_known, "Loads a 1D dataset from given file name");
     m.def("dataset1d_load_fixed", &dataset1d_load_fixed, "Loads a 1D dataset from given file name, and applies a fixed noise level to each data point");
-    m.def("dataset1d_create", &dataset1d_create, "Create a new empty dataset");
-    m.def("py_dataset1d_get_points", &py_dataset1d_get_points);
-    m.def("py_dataset1d_set_points", &py_dataset1d_set_points);
+    m.def("dataset1d_create_from_array", &py_dataset1d_create_from_array, "Create a new empty dataset given x, y and n");
 
     // ------------ BEGIN point1d_t ---------------------------------
     py::class_<point1d_t>(m, "point1d_t")
@@ -152,45 +143,46 @@ PYBIND11_MODULE(_rjmcmc, m) {
         .def_readwrite("y", &point1d_t::y)
         .def_readwrite("n", &point1d_t::n);
 
-    // ------------ BEGIN point1d_t ---------------------------------
+    // ------------ BEGIN resultset1d ---------------------------------
     py::class_<resultset1d>(m, "c_resultset1d")
         .def_readwrite("r", &resultset1d::r);
    
     // ------------ BEGIN resultset1d_t ---------------------------------
     py::class_<resultset1d_t>(m, "resultset1d_t")
         .def(py::init<>())
-        .def_readwrite("results", &resultset1d_t::results)
-        .def_readwrite("burnin", &resultset1d_t::burnin)
-        .def_readwrite("total", &resultset1d_t::total)
+        // .def_readwrite("results", &resultset1d_t::results)
+        // .def_readwrite("burnin", &resultset1d_t::burnin)
+        // .def_readwrite("total", &resultset1d_t::total)
         .def_readwrite("xsamples", &resultset1d_t::xsamples)
         .def_readwrite("ysamples", &resultset1d_t::ysamples)
-        .def_readwrite("nprocesses", &resultset1d_t::nprocesses)
-        .def_readwrite("maxpartitions", &resultset1d_t::maxpartitions)
-        .def_readwrite("maxorder", &resultset1d_t::maxorder)
+        // .def_readwrite("nprocesses", &resultset1d_t::nprocesses)
+        // .def_readwrite("maxpartitions", &resultset1d_t::maxpartitions)
+        // .def_readwrite("maxorder", &resultset1d_t::maxorder)
         .def_readwrite("xmin", &resultset1d_t::xmin)
         .def_readwrite("xmax", &resultset1d_t::xmax)
         .def_readwrite("ymin", &resultset1d_t::ymin)
         .def_readwrite("ymax", &resultset1d_t::ymax)
-        .def_readwrite("gradmin", &resultset1d_t::gradmin)
-        .def_readwrite("gradmax", &resultset1d_t::gradmax)
-        .def_readwrite("propose", &resultset1d_t::propose)
-        .def_readwrite("accept", &resultset1d_t::accept)
-        .def_readwrite("misfit", &resultset1d_t::misfit)
-        .def_readwrite("lambda", &resultset1d_t::lambda)
-        .def_readwrite("order", &resultset1d_t::order)
-        .def_readwrite("partitions", &resultset1d_t::partitions)
-        .def_readwrite("partition_x_hist", &resultset1d_t::partition_x_hist)
-        .def_readwrite("mean", &resultset1d_t::mean)
+        // .def_readwrite("gradmin", &resultset1d_t::gradmin)
+        // .def_readwrite("gradmax", &resultset1d_t::gradmax)
+        // .def_readwrite("propose", &resultset1d_t::propose)
+        // .def_readwrite("accept", &resultset1d_t::accept)
+        // .def_readwrite("misfit", &resultset1d_t::misfit)
+        // .def_readwrite("lambda", &resultset1d_t::lambda)
+        // .def_readwrite("order", &resultset1d_t::order)
+        // .def_readwrite("partitions", &resultset1d_t::partitions)
+        // .def_readwrite("partition_x_hist", &resultset1d_t::partition_x_hist)
+        // .def_readwrite("mean", &resultset1d_t::mean)
         // .def_readwrite("hist", &resultset1d_t::hist)
-        .def_readwrite("mode", &resultset1d_t::mode)
-        .def_readwrite("median", &resultset1d_t::median)
-        .def_readwrite("conf_interval", &resultset1d_t::conf_interval)
-        .def_readwrite("conf_min", &resultset1d_t::conf_min)
-        .def_readwrite("conf_max", &resultset1d_t::conf_max)
-        .def_readwrite("gradient", &resultset1d_t::gradient)
+        // .def_readwrite("mode", &resultset1d_t::mode)
+        // .def_readwrite("median", &resultset1d_t::median)
+        // .def_readwrite("conf_interval", &resultset1d_t::conf_interval)
+        // .def_readwrite("conf_min", &resultset1d_t::conf_min)
+        // .def_readwrite("conf_max", &resultset1d_t::conf_max)
+        // .def_readwrite("gradient", &resultset1d_t::gradient)
         // .def_readwrite("gradient_hist", &resultset1d_t::gradient_hist)
-        .def_readwrite("gradient_conf_min", &resultset1d_t::gradient_conf_min)
-        .def_readwrite("gradient_conf_max", &resultset1d_t::gradient_conf_max);
+        // .def_readwrite("gradient_conf_min", &resultset1d_t::gradient_conf_min)
+        // .def_readwrite("gradient_conf_max", &resultset1d_t::gradient_conf_max)
+        ;
     m.def("py_resultset1d_get_propose", &py_resultset1d_get_propose);
     m.def("py_resultset1d_get_accept", &py_resultset1d_get_accept);
     m.def("py_resultset1d_get_partitions", &py_resultset1d_get_partitions);

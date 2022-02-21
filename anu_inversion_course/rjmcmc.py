@@ -2,9 +2,7 @@ from anu_inversion_course._rjmcmc import (
     dataset1d_t,
     dataset1d_load_known,
     dataset1d_load_fixed,
-    dataset1d_create,
-    py_dataset1d_get_points,
-    py_dataset1d_set_points,
+    dataset1d_create_from_array,
     resultset1d_t,
     py_resultset1d_get_propose,
     py_resultset1d_get_accept,
@@ -53,17 +51,7 @@ class dataset1d:
             if np.any(n<0):
                 raise ValueError("All values in the n array must be greater than zero")
             # ####### END VALIDATION #######
-            self.d = dataset1d_create(x.shape[0])
-            points = py_dataset1d_get_points(self.d)
-            for i in range(x.shape[0]):
-                points[i].x = x[i]
-                points[i].y = y[i]
-                points[i].n = n[i]
-            py_dataset1d_set_points(self.d, points)
-            self.d.xmin = np.min(x)
-            self.d.xmax = np.max(x)
-            self.d.ymin = np.min(y)
-            self.d.ymax = np.max(y)
+            self.d = dataset1d_create_from_array(x, y, n)
         else:
             raise ValueError("Please provide either file name or x,y,n when initialising dataset1d")
 
@@ -123,7 +111,7 @@ class resultset1d:
         return py_resultset1d_get_partition_hist(self.r)
 
     def partition_location_histogram(self):
-        return py_resultset1d_get_partition_x_histogram
+        return py_resultset1d_get_partition_x_histogram(self.r)
 
     def x(self):
         n_xsamples = self.r.xsamples
