@@ -107,6 +107,23 @@ resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,in
     return regression_single1d(&d, burnin, total, max_order, xsamples, ysamples, credible_interval);
 }
 
+// ------------ BEGIN part partition ---------------------------------
+resultset1d *py_regression_part1d_zero(dataset1d_t *dataset,double pd,int burnin,int total,int max_partitions,int xsamples,int ysamples,double credible_interval) {
+    dataset1d d;
+    d.d = dataset;
+    return regression_part1d_zero(&d, pd, burnin, total, max_partitions, xsamples, ysamples, credible_interval);
+}
+resultset1d *py_regression_part1d_natural(dataset1d_t *dataset,double pv,double pd,int burnin,int total,int max_partitions,int xsamples,int ysamples,double credible_interval) {
+    dataset1d d;
+    d.d = dataset;
+    return regression_part1d_natural(&d, pv, pd, burnin, total, max_partitions, xsamples, ysamples, credible_interval);
+}
+resultset1d *py_regression_part1d(dataset1d_t *dataset,double pd,int burnin,int total,int max_partitions,int max_order,int xsamples,int ysamples,double credible_interval) {
+    dataset1d d;
+    d.d = dataset;
+    return regression_part1d(&d, pd, burnin, total, max_partitions, max_order, xsamples, ysamples, credible_interval);
+}
+
 
 // ----------------
 // Python interface
@@ -207,11 +224,21 @@ PYBIND11_MODULE(_rjmcmc, m) {
     
     // ------------ BEGIN single partition ---------------------------------
     m.def("py_regression_single1d", &py_regression_single1d);
-    // m.def("py_regression_single1d_sampled", &py_regression_single1d_sampled);
     m.def("py_regression_single1d_sampled", [](dataset1d_t *dataset,const py::object &callback,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) { 
         dataset1d d;
         d.d = dataset;
         PyObject *callback_obj = callback.ptr();
         return regression_single1d_sampled(&d, callback_obj, burnin, total, max_order, xsamples, ysamples, credible_interval);
+    });
+
+    // ------------ BEGIN part partition ---------------------------------
+    m.def("py_regression_part1d_zero", &py_regression_part1d_zero);
+    m.def("py_regression_part1d_natural", &py_regression_part1d_natural);
+    m.def("py_regression_part1d", &py_regression_part1d);
+    m.def("py_regression_part1d_sampled", [](dataset1d_t *dataset,const py::object &callback,double pd,int burnin,int total,int max_partitions,int max_order,int xsamples,int ysamples,double credible_interval){
+        dataset1d d;
+        d.d = dataset;
+        PyObject *callback_obj = callback.ptr();
+        return regression_part1d_sampled(&d, callback_obj, pd, burnin, total, max_partitions, max_order, xsamples, ysamples, credible_interval);
     });
 }

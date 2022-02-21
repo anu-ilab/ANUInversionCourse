@@ -22,6 +22,10 @@ from anu_inversion_course._rjmcmc import (
     resultset1dfm_get_global_parameter,
     py_regression_single1d,
     py_regression_single1d_sampled,
+    py_regression_part1d_zero,
+    py_regression_part1d_natural,
+    py_regression_part1d,
+    py_regression_part1d_sampled,
 )
 
 import collections
@@ -206,6 +210,22 @@ def regression_single1d(dataset, burnin=10000, total=50000, max_order=5, xsample
 
 def regression_single1d_sampled(dataset, callback, burnin=10000, total=50000, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
     res = py_regression_single1d_sampled(dataset.d, callback, burnin, total, max_order, xsamples, ysamples, credible_interval)
+    return resultset1d(res.r)
+
+def regression_part1d_zero(dataset, pd, burnin=10000, total=50000, max_partitions=20, xsamples=100, ysamples=100, credible_interval=0.95):
+    res = py_regression_part1d_zero(dataset.d, pd, burnin, total, max_partitions, xsamples, ysamples, credible_interval)
+    return resultset1d(res.r)
+
+def regression_part1d_natural(dataset, pv, pd, burnin=10000, total=50000, max_partitions=20, xsamples=100, ysamples=100, credible_interval=0.95):
+    res = py_regression_part1d_natural(dataset.d, pv, pd, burnin, total, max_partitions, xsamples, ysamples, credible_interval)
+    return resultset1d(res.r)
+
+def regression_part1d(dataset, pd, burnin=10000, total=50000, max_partitions=20, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
+    res = py_regression_part1d(dataset.d, pd, burnin, total, max_partitions, max_order, xsamples, ysamples, credible_interval)
+    return resultset1d(res.r)
+
+def regression_part1d_sampled(dataset, callback, pd, burnin=10000, total=50000, max_partitions=20, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
+    res = py_regression_part1d_sampled(dataset.d, callback, pd, burnin, total, max_partitions, max_order, xsamples, ysamples, credible_interval)
     return resultset1d(res.r)
 
 def check_list_like(x):
