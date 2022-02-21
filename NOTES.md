@@ -3,7 +3,35 @@
 Here are some notes that might be useful for future contributors.
 
 ## Getting started
-### Clone this repo, install and build it (as a developer)
+
+To clone this repository:
+```bash
+$ cd <path-to-parent-folder>
+$ git clone https://github.com/anu-ilab/ANUInversionCourse.git
+```
+
+To install the package in developer mode:
+```bash
+# recommended environment set up (optional)
+$ conda create -n inversion_course_dev pip -y
+$ conda activate inversion_course_dev
+$ conda install -c conda-forge gfortran
+
+# begin installation
+$ cd <path-to-parent-folder>/ANUInversionCourse
+$ pip install -e .
+```
+
+Now you can test that it has been installed successfully using Python's interactive mode:
+```bash
+$ python
+>>> from anu_inversion_course import rjmcmc
+>>> exit()
+```
+
+If the first line runs without any error (so you see the second line `>>>`), then it works. So feel free to type `exit()` to quit the interactive mode session.
+
+The `-e` option in the `pip install` command means "developer mode", so that you won't have to install the whole package again whenever you make a change to the source code. However, you do need to run `pip install -e .` if you'd like to test your change in any compiled language (e.g. in your C/C++/Fortran code).
 
 ## Knowledge base
 <details>
