@@ -83,6 +83,17 @@ regression_single1d(dataset1d *dataset,
   return R;
 }
 
+// // Declare the struct.
+// struct CallbackCaller;
+
+// // Declare functions to work with the struct.
+// CallbackCaller* makeAdder(int amount);
+
+// int invokeAdder(CallbackCaller* adder, int n);
+
+// void deleteAdder(CallbackCaller* adder);
+
+
 struct sampled_cb_data {
   PyObject *cb;
 

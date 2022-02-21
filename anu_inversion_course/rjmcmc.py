@@ -21,6 +21,7 @@ from anu_inversion_course._rjmcmc import (
     resultset1dfm_t,
     resultset1dfm_get_global_parameter,
     py_regression_single1d,
+    py_regression_single1d_sampled,
 )
 
 import collections
@@ -201,6 +202,10 @@ class resultset1dfm:
 
 def regression_single1d(dataset, burnin=10000, total=50000, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
     res = py_regression_single1d(dataset.d, burnin, total, max_order, xsamples, ysamples, credible_interval)
+    return resultset1d(res.r)
+
+def regression_single1d_sampled(dataset, callback, burnin=10000, total=50000, max_order=5, xsamples=100, ysamples=100, credible_interval=0.95):
+    res = py_regression_single1d_sampled(dataset.d, callback, burnin, total, max_order, xsamples, ysamples, credible_interval)
     return resultset1d(res.r)
 
 def check_list_like(x):
