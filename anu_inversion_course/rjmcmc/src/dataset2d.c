@@ -7,8 +7,6 @@
 
 #include <rjmcmc/dataset2d.h>
 #include <rjmcmc/rjmcmc_util.h>
-#include "rjmcmc/rjmcmc_debug.h"
-
 
 dataset2d_t *
 dataset2d_allocate(int npoints)
