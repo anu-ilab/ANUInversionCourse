@@ -14,13 +14,8 @@ except ImportError:
     raise
 
 setup(
-    # name="ANU_inversion_course",
-    # version="0.1.0",
-
-    # -------- BELOW FOR TEST_PYPI ------
     name="ANU_inversion_course",
     version="0.1.0",
-    # -------- END TEST CONFIG --------
 
     description="ANU Inversion Course Package",
     author="InLab",
