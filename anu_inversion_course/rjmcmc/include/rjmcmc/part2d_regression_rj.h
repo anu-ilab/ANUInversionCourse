@@ -77,13 +77,13 @@ part2d_regression_rj_propose_value(const part2d_regression_rj_t *current,
 				   double *value_prob);
 
 int 
-part2d_regression_rj_propose_sigma(const part2d_regression_rj_t *current,
+part2d_regression_rj_propose_lambda(const part2d_regression_rj_t *current,
 				   part2d_regression_rj_t *proposed,
 				   const dataset2d_t **datasets,
 				   int ndatasets,
 				   rjmcmc_uniform_rand_t random,
 				   rjmcmc_normal_rand_t normal,
-				   double *sigma_prob);
+				   double *lambda_prob);
 
 int 
 part2d_regression_rj_propose_move(const part2d_regression_rj_t *current,

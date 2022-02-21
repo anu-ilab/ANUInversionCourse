@@ -51,3 +51,4 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Compiled Extensions
 ################################################################################
 add_subdirectory(anu_inversion_course/rfc)
+add_subdirectory(anu_inversion_course/rjmcmc)
