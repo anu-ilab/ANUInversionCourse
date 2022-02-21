@@ -34,7 +34,7 @@ std::vector<int> py_resultset1d_get_partitions(resultset1d_t *r) {
 }
 std::vector<int> py_resultset1d_get_order(resultset1d_t *r) {
     const int *order_hist = resultset1d_get_order(r);
-    std::vector<int> res(order_hist, order_hist+resultset1d_get_max_order(r));
+    std::vector<int> res(order_hist, order_hist+resultset1d_get_max_order(r)+1);
     return res;
 }
 std::vector<int> py_resultset1d_get_partition_hist(resultset1d_t *r) {
@@ -53,7 +53,6 @@ std::vector<int> py_resultset1d_get_partition_x_histogram(resultset1d_t *r) {
 }
 std::vector<double> py_resultset1d_get_mean(resultset1d_t *r) {
     const double *mean = r->mean;
-    printf("%f\n", mean[10]);
     std::vector<double> res(mean, mean+r->xsamples);
     return res;
 }
@@ -104,9 +103,6 @@ std::vector<std::vector<int>> py_resultset1d_get_histogram(resultset1d_t *r) {
 resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) {
     dataset1d d;
     d.d = dataset;
-    for (int i = 0; i < 2; i++) {
-        printf("data point #%d: (%f %f)\n", i, dataset->points[i].x, dataset->points[i].y);
-    }
     return regression_single1d(&d, burnin, total, max_order, xsamples, ysamples, credible_interval);
 }
 
