@@ -17,8 +17,6 @@
 
 #include <float.h>
 
-// struct CallbackCaller;
-
 typedef struct {
   dataset1d_t *d;
 } dataset1d;

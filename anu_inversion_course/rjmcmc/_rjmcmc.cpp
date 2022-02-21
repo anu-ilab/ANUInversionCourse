@@ -106,47 +106,6 @@ resultset1d *py_regression_single1d(dataset1d_t *dataset,int burnin,int total,in
     d.d = dataset;
     return regression_single1d(&d, burnin, total, max_order, xsamples, ysamples, credible_interval);
 }
-// <void(std::vector<double>,std::vector<double>)>
-// resultset1d *py_regression_single1d_sampled(dataset1d_t *dataset,PyObject *callback,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) {
-//     dataset1d d;
-//     d.d = dataset;
-//     return regression_single1d_sampled(&d, callback, burnin, total, max_order, xsamples, ysamples, credible_interval);
-// }
-
-// int func_arg(const std::function<int(int)> &f) {
-//     return f(10);
-// }
-
-// #include <functional>
-
-// typedef std::function<int(int)> AdderFunction;
-// struct Adder
-// {
-//    AdderFunction f;
-// };
-
-// AdderFunction makeAdderFunction(int amount) {
-//     return [amount] (int n) {
-//         return n + amount;
-//     };
-// }
-
-// Adder* makeAdder(int amount)
-// {
-//    Adder* adder = new Adder;
-//    adder->f = makeAdderFunction(amount);
-//    return adder;
-// }
-
-// int invokeAdder(Adder* adder, int n)
-// {
-//    return adder->f(n);
-// }
-
-// void deleteAdder(Adder* adder)
-// {
-//    delete adder;
-// }
 
 
 // ----------------
@@ -252,10 +211,7 @@ PYBIND11_MODULE(_rjmcmc, m) {
     m.def("py_regression_single1d_sampled", [](dataset1d_t *dataset,const py::object &callback,int burnin,int total,int max_order,int xsamples,int ysamples,double credible_interval) { 
         dataset1d d;
         d.d = dataset;
-        // PyObject callback_obj = py::cast<PyObject>(callback);
-        // PyObject callback_obj = callback.cast<PyObject>();
-        PyObject callback_obj = (PyObject) callback;
-        return regression_single1d_sampled(&d, &callback_obj, burnin, total, max_order, xsamples, ysamples, credible_interval);
-        // return func("Hello", 'x', true, 5); 
+        PyObject *callback_obj = callback.ptr();
+        return regression_single1d_sampled(&d, callback_obj, burnin, total, max_order, xsamples, ysamples, credible_interval);
     });
 }
