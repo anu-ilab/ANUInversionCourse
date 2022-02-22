@@ -21,6 +21,13 @@ setup(
     author="InLab",
     packages=[
         "anu_inversion_course",
+        # "anu_inversion_course.curveFitting",
+        # "anu_inversion_course.plotcovellipse",
+        # "anu_inversion_course.eqlocate",
+        # "anu_inversion_course.xrayTomography",
+        # "anu_inversion_course.rf",
+        # "anu_inversion_course.rayTracer",
+        # "anu_inversion_course.rjmcmc",
     ],
     install_requires=[
         "numpy>=1.22.0",
