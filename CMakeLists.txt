@@ -52,3 +52,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 ################################################################################
 add_subdirectory(anu_inversion_course/rfc)
 add_subdirectory(anu_inversion_course/rjmcmc)
+# if (NOT WIN32)
+#     add_subdirectory(anu_inversion_course/rjmcmc)
+# endif (NOT WIN32)

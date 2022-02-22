@@ -12,6 +12,7 @@
 #include "rjmcmc/rjmcmc_defines.h"
 
 struct _position_map2d {
+  int max_partitions;
 };
 
 static struct position_map2d_map {
