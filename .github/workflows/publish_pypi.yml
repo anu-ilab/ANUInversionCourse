@@ -78,10 +78,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        
       - name: Extract Release Version
         id: release_version
         run: |
           set -e
+          pwd
           echo ::set-output name=version::$(python -c "import _version as v; print(v.__version__)")
         working-directory: anu_inversion_course
 
