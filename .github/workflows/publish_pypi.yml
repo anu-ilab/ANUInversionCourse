@@ -80,7 +80,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        
+
       - name: Extract Release Version
         id: release_version
         run: |
@@ -90,15 +90,9 @@ jobs:
         working-directory: anu_inversion_course
 
       - name: Create release tag
-        uses: actions/github-script@v5
+        uses: rickstaa/action-create-tag@v1.2.1
         with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/v${{ steps.release_version.outputs.version }}'
-              sha: context.sha
-            })
+          tag: "v${{ steps.release_version.outputs.version }}"
 
       - name: Download artifact
         uses: actions/download-artifact@v2
