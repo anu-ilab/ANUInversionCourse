@@ -24,9 +24,13 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Set up environment
+        run: |
+          $CONDA/bin/conda install scikit-build
+
       - name: Build and check sdist
         run: |
-          python setup.py sdist
+          $CONDA/bin/python setup.py sdist
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
