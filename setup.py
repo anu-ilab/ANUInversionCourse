@@ -16,7 +16,7 @@ except ImportError:
 
 # get version number
 _ROOT = pathlib.Path(__file__).parent
-with open(str(_ROOT / 'anu_inversion_course' / '_version.py')) as f:
+with open(str(_ROOT / '_version.py')) as f:
     for line in f:
         if line.startswith('__version__ ='):
             _, _, version = line.partition('=')
@@ -24,7 +24,7 @@ with open(str(_ROOT / 'anu_inversion_course' / '_version.py')) as f:
             break
     else:
         raise RuntimeError(
-            'unable to read the version from anu_inversion_course/_version.py')
+            'unable to read the version from ./_version.py')
 
 # run set up
 setup(

@@ -2,6 +2,11 @@
 
 Here are some notes that might be useful for future contributors.
 
+## Contents
+1. [Getting started](NOTES.md#getting-started)
+2. [Knowledge base](NOTES.md#knowledge-base)
+3. [Publish your changes](NOTES.md#publish-your-changes)
+
 ## Getting started
 
 To clone this repository:
@@ -41,6 +46,7 @@ The `-e` option in the `pip install` command means "developer mode", so that you
 `setup.py`, `setup.cfg` & `pyproject.toml`
 
 ### 2. What is a Python wheel
+https://packaging.python.org/en/latest/specifications/binary-distribution-format/
 
 ### 3. Where to specify dependencies
 
