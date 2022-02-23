@@ -37,44 +37,45 @@ jobs:
         with:
           path: dist/*.tar.gz
 
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest, windows-latest, macos-latest]
+  # build_wheels:
+  #   name: Build wheels on ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #       # os: [ubuntu-latest, windows-latest, macos-latest]
 
-    steps:
-      - name: Symlink gfortran for macOS
-        if: runner.os == 'macOS'
-        run: |
-          # make sure gfortran is available
-          # https://github.com/actions/virtual-environments/issues/2524
-          # https://github.com/cbg-ethz/dce/blob/master/.github/workflows/pkgdown.yaml
-          sudo ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
-          sudo mkdir /usr/local/gfortran
-          sudo ln -s /usr/local/Cellar/gcc@10/*/lib/gcc/10 /usr/local/gfortran/lib
-          gfortran --version
+  #   steps:
+  #     - name: Symlink gfortran for macOS
+  #       if: runner.os == 'macOS'
+  #       run: |
+  #         # make sure gfortran is available
+  #         # https://github.com/actions/virtual-environments/issues/2524
+  #         # https://github.com/cbg-ethz/dce/blob/master/.github/workflows/pkgdown.yaml
+  #         sudo ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+  #         sudo mkdir /usr/local/gfortran
+  #         sudo ln -s /usr/local/Cellar/gcc@10/*/lib/gcc/10 /usr/local/gfortran/lib
+  #         gfortran --version
 
-      - name: Checkout repo
-        uses: actions/checkout@v2
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v2
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.3.1
-        env:
-          CIBW_ARCHS_MACOS: x86_64 arm64
-          CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
-          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v2.3.1
+  #       env:
+  #         CIBW_ARCHS_MACOS: x86_64 arm64
+  #         CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
+  #         CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          path: wheelhouse/*.whl
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         path: wheelhouse/*.whl
 
   publish_pypi:
     name: Upload source distribution and wheels to PyPI
-    needs: [build_sdist, build_wheels]
+    # needs: [build_sdist, build_wheels]
+    needs: [build_sdist]
     runs-on: ubuntu-latest
 
     steps:
@@ -93,6 +94,7 @@ jobs:
         uses: rickstaa/action-create-tag@v1.2.1
         with:
           tag: "v${{ steps.release_version.outputs.version }}"
+          force_push_tag: true
 
       - name: Download artifact
         uses: actions/download-artifact@v2
@@ -106,6 +108,7 @@ jobs:
           user: __token__
           password: ${{ secrets.TEST_PYPI_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
+          verbose: true
         if: ${{ github.event.inputs.pypi_repo == 'testpypi' }}
 
       - name: Publish package to PyPI
@@ -113,5 +116,6 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
+          verbose: true
         if: ${{ github.event.inputs.pypi_repo == 'pypi' }}
       
