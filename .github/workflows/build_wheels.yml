@@ -2,6 +2,7 @@ name: Build
 
 # on: [push, pull_request]
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'anu_inversion_course/**'
@@ -33,7 +34,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
-          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
 
       - uses: actions/upload-artifact@v2
         with:

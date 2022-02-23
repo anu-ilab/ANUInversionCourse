@@ -7,6 +7,7 @@ on:
   #       description: 'Repo to upload to (testpypi or pypi)'
   #       default: 'testpypi'
   #       required: true
+  workflow_dispatch:
   push:
     paths:
       - "_version.py"
@@ -66,7 +67,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
-          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
