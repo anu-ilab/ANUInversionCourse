@@ -1,8 +1,9 @@
 # rm -rf _skbuild; pip install -e .
 
 import sys
+import pathlib
 
-
+# import skbuild
 try:
     from skbuild import setup
 except ImportError:
@@ -13,9 +14,22 @@ except ImportError:
     )
     raise
 
+# get version number
+_ROOT = pathlib.Path(__file__).parent
+with open(str(_ROOT / 'anu_inversion_course' / '_version.py')) as f:
+    for line in f:
+        if line.startswith('__version__ ='):
+            _, _, version = line.partition('=')
+            VERSION = version.strip(" \n'\"")
+            break
+    else:
+        raise RuntimeError(
+            'unable to read the version from anu_inversion_course/_version.py')
+
+# run set up
 setup(
     name="ANU_inversion_course",
-    version="0.1.0.dev0",
+    version=VERSION,
 
     description="ANU Inversion Course Package",
     author="InLab",
