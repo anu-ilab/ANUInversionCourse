@@ -63,6 +63,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
+          CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
@@ -81,7 +82,8 @@ jobs:
         id: release_version
         run: |
           set -e
-          echo ::set-output name=version::$(python -c "import anu_inversion_course._version as v; print(v.__version__)")
+          echo ::set-output name=version::$(python -c "import _version as v; print(v.__version__)")
+        working-directory: anu_inversion_course
 
       - name: Create release tag
         uses: actions/github-script@v5
