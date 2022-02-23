@@ -42,7 +42,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Symlink gfortran for macOS
@@ -80,7 +81,7 @@ jobs:
         id: release_version
         run: |
           set -e
-          echo ::set-output name=version::$(python -c "import anu_inversion_course.__version as v; print(v.__version__)")
+          echo ::set-output name=version::$(python -c "import anu_inversion_course._version as v; print(v.__version__)")
 
       - name: Create release tag
         uses: actions/github-script@v5
