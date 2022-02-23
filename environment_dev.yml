@@ -1,0 +1,4 @@
+name: inversion_course_dev
+dependencies:
+  - pip>=21.0.0
+  - scikit-build>=0.11.1
