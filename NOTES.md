@@ -4,8 +4,13 @@ Here are some notes that might be useful for future contributors.
 
 ## Contents
 1. [Getting started](NOTES.md#getting-started)
-2. [Knowledge base](NOTES.md#knowledge-base)
-3. [Publish your changes](NOTES.md#publish-your-changes)
+2. [Cheatsheet](NOTES.md#cheatsheet)
+   1. [conda environment](NOTES.md#conda-environment)
+   2. [package development](NOTES.md#package-development)
+   3. [package building test & release](NOTES.md#package-building-test--release)
+   4. [git operations](NOTES.md#git-operations)
+3. [Adding C/C++ extensions](NOTES.md#adding-cc-extensions)
+4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
 
 ## Getting started
 
@@ -17,7 +22,12 @@ $ git clone https://github.com/anu-ilab/ANUInversionCourse.git
 
 **Step 2**. Install gfortran as per this [instruction](https://fortran-lang.org/learn/os_setup/install_gfortran).
 
-**Step 3**. To install the package in developer mode:
+Check that the version is not something as old as 4 or 5:
+```bash
+$ gfortran --verion
+```
+
+**Step 3**. To set up environment and install the package (in developer mode):
 ```bash
 # recommended environment set up (optional)
 $ conda env create -f environment_dev.yml
@@ -37,27 +47,57 @@ $ python
 
 If the first line runs without any error (so you see the second line `>>>`), then it works. So feel free to type `exit()` to quit the interactive mode session.
 
-**Note**:
-The `-e` option in the `pip install` command means "developer mode", so that you won't have to install the whole package again whenever you make a change to the source code. However, you do need to run `pip install -e .` if you'd like to test your change in any compiled language (e.g. in your C/C++/Fortran code).
+## Cheatsheet
+### conda environment
+- To **enter** conda virtual environment: `conda activate inversion_course_dev`
+- To **exit** conda virtual environment: `conda deactivate`
+- To **remove** a conda environment: `conda env remove -n inversion_course_dev`
+- To **create** a conda environment from file: `conda env create -f environment_dev.yml`
 
-## Knowledge base
-<details>
-  <summary>Click to expand!</summary>
-  
-### 1. Package metadata
-`setup.py`, `setup.cfg` & `pyproject.toml`
+### package development
+- To **install** the Python package in your current environment: `pip install -e .`
+- To **install** the Python package *again* after you've made changes in C/C++/Fortran or `CMakeLists.txt`: `rm -rf _skbuild; pip uninstall anu-inversion-course -y; pip install -e .`
+- To change package **metadata** (like keywords, author, etc): edit the file `setup.cfg`
+- To specify/change package **dependency** (other Python packages that you'd like to ensure users have before installing anu-inversion-course): edit the `install_requires` list inside `setup.cfg` as well as `setup.py`
 
-### 2. What is a Python wheel
-https://packaging.python.org/en/latest/specifications/binary-distribution-format/
+### package building test & release
+- To **automatically publish** your changes to Python packaging index: edit `_version.py` with an increased version number and push your change to remote. As long as you've made a change in file `_verison.py`, then a github action will be triggered to build distributions and upload them to [test-pypi](https://test.pypi.org/project/ANU-inversion-course/) and [pypi](https://pypi.org/project/ANU-inversion-course/).
+  - in version `a.b.c`:
+    - `a` is the major version, and it's increased only when there's backward incompatible changes
+    - `b` is the minor version, and it's increased when there'a backward compatible change
+    - `c` is the patch version, and it's increased when there are only bug fixes related change
+    - the version `1.0.0` indicates the first official release (that defines the public API)
+    - 1.0.0.dev1 < 1.0.0.dev2 < 1.0.0 < 1.0.1
+- To **check "publish workflow" status**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml), click on the top workflow run, you'll see the status
+- To **manually trigger the "publish workflow"**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
+- To **automatically test building** of the package: as long as you've made changes under the source folder `anu_inversion_course`, then a github action will be triggered to test building this package on *Linux/MacOS/Windows* for Python version *3.8, 3.9 and 3.10*.
+- To **manually trigger the "build workflow"**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
 
-### 3. Where to specify dependencies
+### git operations
+- To **clone** a git repository: `git clone https://github.com/anu-ilab/ANUInversionCourse.git`
+- To **prepare** to commit your changes: `git add <file-you-want-to-commit> <maybe-another-file>`
+- To **commit** your changes (very much like a "save" operation in the context of git): `git commit -m "put meaningful commit message here so you know what's been changed in this commit in the future"` (e.g. `git commit -m "Updated developer notes"`)
+- To **push** your changes: `git push origin main` (where `origin` refers to the remote repository, and `main` refers to the remote branch, for which `main` is the default name)
+- To **retrieve** changes from remote into your local clone (maybe after someone else pushed a change): `git pull origin main`
 
-> Note that the `install-requires` list in `setup.py`/`setup.cfg` is different from the `requires` under `build-system` in file `pyproject.toml`, in that the latter refers to what packages are required when building this package (e.g. generating wheels).
-</details>
+## Adding C/C++ extensions
+- Step 1: move the source code inside a new folder under `anu_inversion_course`, say `anu_inversion_course/my_cpp_extension`. We assume the source code to be a simple function, for example:
+```cpp
+#include <iostream>
+void hello(String name) {
+    std::cout << "Hello " << name;
+}
+```
+- Step 2: use pybind11 to wrap this function, by adding some extra code:
+```cpp
 
-## Publish your changes
+```
+- Step 3: add this folder in the root level `CMakeLists.txt` file. At the bottom of this file, add `add_subdirectory(anu_inversion_course/my_cpp_extension)`
+- Step 4: create a new file `CMakeLists.txt` under `anu_inversion_course/my_cpp_extension`, with the following content
+```cmake
+set(pybind11_module_name_my_cpp_extension "_my_cpp_extension")
+pybind11_add_module(${pybind11_module_name_my_cpp_extension} SHARED my_cpp_source.cpp my_cpp_wrapper.cpp)
+install(TARGETS ${pybind11_module_name_my_cpp_extensions} LIBRARY DESTINATION anu_inversion_course)
+```
 
-### Build the wheels
-
-### upload to PyPI
-
+## Adding Fortran extensions
