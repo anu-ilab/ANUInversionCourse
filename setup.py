@@ -37,7 +37,7 @@ setup(
         "anu_inversion_course",
     ],
     install_requires=[
-        "numpy>=1.22.0",
+        "numpy>=1.22.2",
         "matplotlib>=3.5.0",
         "scipy>=1.7.0",
         "tqdm>=4.62.0",
