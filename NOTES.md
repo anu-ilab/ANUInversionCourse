@@ -11,6 +11,7 @@ Here are some notes that might be useful for future contributors.
    4. [git operations](NOTES.md#git-operations)
 3. [Adding C/C++ extensions](NOTES.md#adding-cc-extensions)
 4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
+5. [More references](NOTES.md#more-references)
 
 ## Getting started
 
@@ -47,6 +48,7 @@ $ python
 
 If the first line runs without any error (so you see the second line `>>>`), then it works. So feel free to type `exit()` to quit the interactive mode session.
 
+----
 ## Cheatsheet
 ### conda environment
 - To **enter** conda virtual environment: `conda activate inversion_course_dev`
@@ -80,24 +82,107 @@ If the first line runs without any error (so you see the second line `>>>`), the
 - To **push** your changes: `git push origin main` (where `origin` refers to the remote repository, and `main` refers to the remote branch, for which `main` is the default name)
 - To **retrieve** changes from remote into your local clone (maybe after someone else pushed a change): `git pull origin main`
 
+----
 ## Adding C/C++ extensions
-- Step 1: move the source code inside a new folder under `anu_inversion_course`, say `anu_inversion_course/my_cpp_extension`. We assume the source code to be a simple function, for example:
+- Step 1: move the source code inside a new folder under `anu_inversion_course`, say `anu_inversion_course/my_cpp_extension`. We assume the source code (in a file named `_my_cpp_extension.cpp`) to be a simple function, for example:
 ```cpp
 #include <iostream>
 void hello(String name) {
     std::cout << "Hello " << name;
 }
 ```
-- Step 2: use pybind11 to wrap this function, by adding some extra code:
-```cpp
 
+- Step 2: use [pybind11](https://pybind11.readthedocs.io/en/stable/) to wrap this function, by adding some extra code:
+```cpp
+#include <pybind11/pybind11.h>
+#include <Python.h>
+
+#include <iostream>
+void hello(String name) {
+    std::cout << "Hello " << name;
+}
+
+namespace py = pybind11;
+PYBIND11_MODULE(_my_cpp_extension, m) {
+    m.doc() = "My CPP Extension";
+    m.def("hello", &hello, "Print hello message given a name");
+}
 ```
-- Step 3: add this folder in the root level `CMakeLists.txt` file. At the bottom of this file, add `add_subdirectory(anu_inversion_course/my_cpp_extension)`
-- Step 4: create a new file `CMakeLists.txt` under `anu_inversion_course/my_cpp_extension`, with the following content
+
+- Step 3: add the path to the folder that contains the above file to the root-level `CMakeLists.txt` file. At the bottom of the root-level `CMakeLists.txt` file, add `add_subdirectory(anu_inversion_course/my_cpp_extension)`
+
+- Step 4: create a new file `CMakeLists.txt` under `anu_inversion_course/my_cpp_extension`, with the following lines
 ```cmake
 set(pybind11_module_name_my_cpp_extension "_my_cpp_extension")
 pybind11_add_module(${pybind11_module_name_my_cpp_extension} SHARED my_cpp_source.cpp my_cpp_wrapper.cpp)
 install(TARGETS ${pybind11_module_name_my_cpp_extensions} LIBRARY DESTINATION anu_inversion_course)
 ```
 
+- Step 5: compile the extension by calling Python's install `pip install -e .` on the root level, and you will see a compiled extension (ending with `.so` if you are on MacOS) appear under folder `anu_inversion_course`.
+
+> Checkout reversible jump MCMC (rjmcmc) for a more complex example: [cmake file](anu_inversion_course/rjmcmc/CMakeLists.txt), [C++ wrappers](anu_inversion_course/rjmcmc/_rjmcmc.cpp) (on top of source code) and [Python wrapper](anu_inversion_course/rjmcmc.py) (on top of compiled library)
+
 ## Adding Fortran extensions
+
+- Step 1: (similarly) move the source code inside a new folder, like `anu_inversion_course/my_f77_extension`. We assume the source code (in a file named `_my_f77_extension.f`) to be a simple function, for example:
+
+```fortran
+C file: _my_f77_extension.f
+      subroutine add_one(n, res)
+
+      integer n
+      integer res
+      res = n + 1
+      
+      end subroutine add_one
+C end file _my_f77_extension.f
+```
+
+- Step 2: annotate the function signature using [f2py](https://numpy.org/doc/stable/f2py/f2py.getting-started.html) rules:
+
+```fortran
+C file: _my_f77_extension.f
+      subroutine add_one(n, res)
+
+      integer n
+      integer res
+Cf2py intent(in) n
+Cf2py intent(out) res
+
+      res = n + 1
+      
+      end subroutine add_one
+C end file _my_f77_extension.f
+```
+
+- Step 3: add the path to the folder that contains the above file to the root-level `CMakeLists.txt` file. At the bottom of the root-level `CMakeLists.txt` file, add `add_subdirectory(anu_inversion_course/my_f77_extension)`
+
+- Step 4: create a new file `CMakeLists.txt` under `anu_inversion_course/my_f77_extension`, with the following lines
+```cmake
+set(f2py_module_name_my_f77_extension "_my_f77_extension")
+set(fortran_77_src_file "${CMAKE_CURRENT_SOURCE_DIR}/_my_f77_extension.f")
+set(generated_module_file_77 ${CMAKE_CURRENT_BINARY_DIR}/${f2py_module_name_my_f77_extension}${PYTHON_EXTENSION_MODULE_SUFFIX})
+add_custom_target(${f2py_module_name_my_f77_extension} ALL DEPENDS ${generated_module_file_77})
+add_custom_command(
+  OUTPUT ${generated_module_file_77}
+  COMMAND ${F2PY_EXECUTABLE}
+    -m ${f2py_module_name_my_f77_extension}
+    -c
+    ${fortran_77_src_file}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+install(FILES ${generated_module_file_77} DESTINATION anu_inversion_course)
+```
+
+- Step 5: compile the extension by calling Python's install `pip install -e .` on the root level, and you will see a compiled extension (ending with `.so` if you are on MacOS) appear under folder `anu_inversion_course`.
+
+> Checkout receiver function (rfc) for a more complex example: [cmake file](anu_inversion_course/rfc/CMakeLists.txt), [Fortran code with signature annotation](anu_inversion_course/rfc/RF.F90) and [Python wrapper](anu_inversion_course/rf.py) (on top of compiled library)
+
+
+## More references
+- [scikit-build documentation](https://scikit-build.readthedocs.io/en/latest/)
+  - you might find the [CMake Modules](https://scikit-build.readthedocs.io/en/latest/) part especially useful
+- for Fortran bindings: [f2py](https://numpy.org/doc/stable/f2py/)
+  - check the receiver function (rfc) example: [cmake file](anu_inversion_course/rfc/CMakeLists.txt), [Fortran code with signature annotation](anu_inversion_course/rfc/RF.F90) and [Python wrapper](anu_inversion_course/rf.py) (on top of compiled library)
+- for C/C++ bindings: [pybind11](https://pybind11.readthedocs.io/en/stable/)
+  - check the reversible jump MCMC (rjmcmc) example: [cmake file](anu_inversion_course/rjmcmc/CMakeLists.txt), [C++ wrappers](anu_inversion_course/rjmcmc/_rjmcmc.cpp) (on top of source code) and [Python wrapper](anu_inversion_course/rjmcmc.py) (on top of compiled library)
