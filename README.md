@@ -1,6 +1,7 @@
 # ANU Inversion Course Package
 
 [![Build](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml/badge.svg?branch=main)](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml)
+[![PyPI version](https://badge.fury.io/py/ANU-inversion-course.svg)](https://badge.fury.io/py/ANU-inversion-course)
 
 This package contains resources to be used in the [inversion course practicals](https://github.com/anu-ilab/JupyterPracticals).
 
