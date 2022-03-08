@@ -52,7 +52,7 @@ $ which pip
 $ which jupyter-lab
 <same-path>/bin/jupyter-lab
 $ pip list | grep ANU-inversion-course
-anu-inversion-course               0.1.0
+ANU-inversion-course               0.1.0
 ```
 
 
