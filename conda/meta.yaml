@@ -1,0 +1,25 @@
+package:
+  name: anu-inversion-course
+  version: 0.1.0.dev7
+
+source:
+  git_rev:
+  git_url: https://github.com/anu-ilab/ANUInversionCourse.git
+
+requirements:
+  build:
+    - python
+    - scikit-build
+    - gfortran
+    - numpy
+    - cython
+    - pybind11
+    - scipy
+    - jupyterlab
+
+  run:
+    - python
+    - numpy
+
+about:
+  home: https://github.com/anu-ilab/ANUInversionCourse
