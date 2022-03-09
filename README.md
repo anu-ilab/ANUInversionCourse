@@ -18,17 +18,18 @@ conda activate inversion_course
 ```
 
 ### 2. Dependency
-A *Fortran compiler* is needed for Apple Silicon M1, and Fortran libraries (`libgfortran11`) is also needed for other operating systems. So remember to have `gfortran` installed before installing this package. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) for instructions on how to download it.
+
+This package requires you to have `gfortran` installed. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) (and notes below for MacOS) for instructions on how to install `gfortran`.
 
 <details>
-  <summary>Notes for MacOS</summary>
+  <summary>Notes for installing `gfortran` on MacOS</summary>
 
   Make sure you have `xcode` installed (from App Store), and then the command line tools installed by opening terminal and typing in:
   ```console
   xcode-select --install
   ```
 
-  For M1 chip: if you've set up a conda environment, then another option is to install `gfortran` using `conda`:
+  *For M1 chip*: if you've set up a conda environment, then another option is to install `gfortran` using `conda`:
   ```console
   conda install -c conda-forge gfortran
   ```
@@ -36,6 +37,13 @@ A *Fortran compiler* is needed for Apple Silicon M1, and Fortran libraries (`lib
 
 </details>
 
+<details>
+  <summary>Reasons for why we need `gfortran`</summary>
+
+- A *Fortran compiler* is needed for MacOS to build C/Fortran libraries from source, as [wheels](https://packaging.python.org/en/latest/glossary/#term-Wheel) are not provided for MacOS due to a problem described [here](https://github.com/lanl/ExactPack/issues/2). 
+- Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import.
+  
+</details>
 
 ### 3. Installation
 Type the following in your terminal:
@@ -55,5 +63,10 @@ $ pip list | grep ANU-inversion-course
 ANU-inversion-course               0.1.0
 ```
 
+## Troubleshooting
 
+If you find problems importing `anu_inversion_course.rf`, try to search the error message you get. And here is how to locate `libgfortran`:
+```console
+gfortran --print-file-name libgfortran.5.dylib
+```
 
