@@ -72,7 +72,7 @@ def eqlocate(x0,y0,z0,ts,la,lo,el,vpin,tol,solvedep=False,nimax=100,verbose=Fals
         #print(' ni ',ni)
         #print('G :\n',G[ni-1])
         #print('d :\n',d[ni-1])
-        m=np.linalg.lstsq(G,res)[0]
+        m=np.linalg.lstsq(G,res,rcond=-1)[0]
         t0=t0+m[0]
         x0=x0+m[1]/lo2km # update longitude solution and convert to degrees
         y0=y0+m[2]/la2km # update latitude solution and convert to degrees
