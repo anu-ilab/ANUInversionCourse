@@ -5,12 +5,21 @@
 
 This package contains resources to be used in the [inversion course practicals](https://github.com/anu-ilab/JupyterPracticals).
 
+## Table of contents
+- [Getting started](README.md#getting-started)
+  - [Set up virtual environment](README.md#1-set-up-virtual-environment)
+  - [Dependency](README.md#2-dependency)
+  - [Installation](README.md#3-installation)
+  - [Check](README.md#4-check)
+- [Troubleshooting](README.md#troubleshooting)
+- [Developer notes](README.md#developer-notes)
+
 ## Getting started
 
 ### 1. Set up virtual environment
 (optional) It's recommended to use a virtual environment (using `conda` or `venv`, etc.) so that it doesn't conflict with your other Python projects. Create a new environment with 
 ```console
-conda create -n inversion_course python=3.10 jupyterlab
+conda create -n inversion_course python=3.10
 ``` 
 and enter that environment with 
 ```console
@@ -65,8 +74,23 @@ ANU-inversion-course               0.1.0
 
 ## Troubleshooting
 
-If you find problems importing `anu_inversion_course.rf`, try to search the error message you get. And here is how to locate `libgfortran`:
+If you find problems *importing* `anu_inversion_course.rf`, try to search the error message you get. [Here](https://stackoverflow.com/questions/58793399/importerror-library-not-loaded-for-f2py) contains a nice explanation for the possible cause. And here is how to locate `libgfortran`:
 ```console
 gfortran --print-file-name libgfortran.5.dylib
 ```
 
+## Developer Notes
+
+Check out [NOTES.md](NOTES.md) if you'd like to contribute to this package.
+
+1. [Getting started](NOTES.md#getting-started)
+2. [Cheatsheet](NOTES.md#cheatsheet)
+   1. [conda environment](NOTES.md#conda-environment)
+   2. [git operations](NOTES.md#git-operations)
+   3. [package development](NOTES.md#package-development)
+   4. [package metadata](NOTES.md#package-metadata)
+   5. [package building test & release](NOTES.md#package-building-test--release)
+3. [Adding C/C++ extensions](NOTES.md#adding-cc-extensions)
+4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
+5. [More references](NOTES.md#more-references)
+6. [Appendix - semantic versioning](NOTES.md#appendix-i---sementic-versioning)

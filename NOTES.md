@@ -2,16 +2,18 @@
 
 Here are some notes that might be useful for future contributors.
 
-## Contents
+## Table of contents
 1. [Getting started](NOTES.md#getting-started)
 2. [Cheatsheet](NOTES.md#cheatsheet)
    1. [conda environment](NOTES.md#conda-environment)
-   2. [package development](NOTES.md#package-development)
-   3. [package building test & release](NOTES.md#package-building-test--release)
-   4. [git operations](NOTES.md#git-operations)
+   2. [git operations](NOTES.md#git-operations)
+   3. [package development](NOTES.md#package-development)
+   4. [package metadata](NOTES.md#package-metadata)
+   5. [package building test & release](NOTES.md#package-building-test--release)
 3. [Adding C/C++ extensions](NOTES.md#adding-cc-extensions)
 4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
 5. [More references](NOTES.md#more-references)
+6. [Appendix - semantic versioning](NOTES.md#appendix-i---sementic-versioning)
 
 ## Getting started
 
@@ -56,31 +58,28 @@ If the first line runs without any error (so you see the second line `>>>`), the
 - To **remove** a conda environment: `conda env remove -n inversion_course_dev`
 - To **create** a conda environment from file: `conda env create -f environment_dev.yml`
 
-### package development
-- To **install** the Python package in your current environment: `pip install -e .`
-- To **install** the Python package *again* after you've made changes in C/C++/Fortran or `CMakeLists.txt`: `rm -rf _skbuild; pip uninstall anu-inversion-course -y; pip install -e .`
-- To change package **metadata** (like keywords, author, etc): edit the file `setup.cfg`
-- To specify/change package **dependency** (other Python packages that you'd like to ensure users have before installing anu-inversion-course): edit the `install_requires` list inside `setup.cfg` as well as `setup.py`
-
-### package building test & release
-- To **automatically publish** your changes to Python packaging index: edit `_version.py` with an increased version number and push your change to remote. As long as you've made a change in file `_verison.py`, then a github action will be triggered to build distributions and upload them to [test-pypi](https://test.pypi.org/project/ANU-inversion-course/) and [pypi](https://pypi.org/project/ANU-inversion-course/).
-  - in version `a.b.c`:
-    - `a` is the major version, and it's increased only when there's backward incompatible changes
-    - `b` is the minor version, and it's increased when there'a backward compatible change
-    - `c` is the patch version, and it's increased when there are only bug fixes related change
-    - the version `1.0.0` indicates the first official release (that defines the public API)
-    - 1.0.0.dev1 < 1.0.0.dev2 < 1.0.0 < 1.0.1
-- To **check "publish workflow" status**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml), click on the top workflow run, you'll see the status
-- To **manually trigger the "publish workflow"**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
-- To **automatically test building** of the package: as long as you've made changes under the source folder `anu_inversion_course`, then a github action will be triggered to test building this package on *Linux/MacOS/Windows* for Python version *3.8, 3.9 and 3.10*.
-- To **manually trigger the "build workflow"**: go to [this page](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
-
 ### git operations
 - To **clone** a git repository: `git clone https://github.com/anu-ilab/ANUInversionCourse.git`
 - To **prepare** to commit your changes: `git add <file-you-want-to-commit> <maybe-another-file>`
 - To **commit** your changes (very much like a "save" operation in the context of git): `git commit -m "put meaningful commit message here so you know what's been changed in this commit in the future"` (e.g. `git commit -m "Updated developer notes"`)
 - To **push** your changes: `git push origin main` (where `origin` refers to the remote repository, and `main` refers to the remote branch, for which `main` is the default name)
 - To **retrieve** changes from remote into your local clone (maybe after someone else pushed a change): `git pull origin main`
+
+### package development
+- To **install** the Python package in your current environment: `pip install -e .`
+- To **install** the Python package **again** after you've made changes in C/C++/Fortran or `CMakeLists.txt`: `rm -rf _skbuild; pip uninstall anu-inversion-course -y; pip install -e .`
+
+### package metadata
+- To change package **metadata** (like keywords, author, etc): edit the file `setup.cfg`
+- To specify/change package **dependency** (other Python packages that you'd like to ensure users have before installing anu-inversion-course): edit the `install_requires` list inside `setup.cfg` as well as `setup.py`
+
+### package building test & release
+- To **automatically publish** your changes to Python packaging index: edit `_version.py` with an increased version number and push your change to remote. Check [Appendix](NOTES.md#appendix-i---sementic-versioning) for how to version it.
+  - As long as you've made a change in file `_verison.py`, a github action will be triggered to build distributions and upload them to [test-pypi](https://test.pypi.org/project/ANU-inversion-course/) and [pypi](https://pypi.org/project/ANU-inversion-course/).
+- To **manually publish** (when the above workflow fails): go to [publish workflow](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
+- To **automatically test building** of the package: as long as you've made changes under the source folder `anu_inversion_course`, then a github action will be triggered to test building this package on *Linux/MacOS/Windows* for Python version *3.8, 3.9 and 3.10*.
+- To **manually test building**: go to [test building workflow](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml), within the light blue box click "Run workflow" -> "Run workflow" and wait
+- To check **workflow status**: go to [publish workflow](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/publish_pypi.yml) or [test building workflow](https://github.com/anu-ilab/ANUInversionCourse/actions/workflows/build_wheels.yml), click on the top (most recent) workflow run and wait for the page to load
 
 ----
 ## Adding C/C++ extensions
@@ -186,3 +185,14 @@ install(FILES ${generated_module_file_77} DESTINATION anu_inversion_course)
   - check the receiver function (rfc) example: [cmake file](anu_inversion_course/rfc/CMakeLists.txt), [Fortran code with signature annotation](anu_inversion_course/rfc/RF.F90) and [Python wrapper](anu_inversion_course/rf.py) (on top of compiled library)
 - for C/C++ bindings: [pybind11](https://pybind11.readthedocs.io/en/stable/)
   - check the reversible jump MCMC (rjmcmc) example: [cmake file](anu_inversion_course/rjmcmc/CMakeLists.txt), [C++ wrappers](anu_inversion_course/rjmcmc/_rjmcmc.cpp) (on top of source code) and [Python wrapper](anu_inversion_course/rjmcmc.py) (on top of compiled library)
+
+## Appendix I - sementic versioning
+
+[Here](https://semver.org/) is the full description of semantic versioning. 
+
+TLDR, for a version number `a.b.c`:
+  - `a` is the major version, and it's increased only when there's backward incompatible changes
+  - `b` is the minor version, and it's increased when there'a backward compatible change
+  - `c` is the patch version, and it's increased when there are only bug fixes related change
+  - the version `1.0.0` indicates the first official release (that defines the public API)
+  - 1.0.0.dev1 < 1.0.0.dev2 < 1.0.0 < 1.0.1
