@@ -45,7 +45,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
+        # disable macos wheels until we find a solution for locating libgfortran.5.dylib:
+        # a similar issue decription: https://github.com/lanl/ExactPack/issues/2
+        # os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Symlink gfortran for macOS
@@ -66,8 +69,8 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.1
         env:
           # CIBW_ARCHS_MACOS: x86_64 universal2
+          # CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
-          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
