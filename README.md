@@ -19,7 +19,7 @@ This package contains resources to be used in the [inversion course practicals](
 ### 1. Set up virtual environment
 (optional) It's recommended to use a virtual environment (using `conda` or `venv`, etc.) so that it doesn't conflict with your other Python projects. Create a new environment with 
 ```console
-conda create -n inversion_course python=3.10
+conda create -n inversion_course python=3.10 scipy
 ``` 
 and enter that environment with 
 ```console
@@ -28,7 +28,9 @@ conda activate inversion_course
 
 ### 2. Dependency
 
-This package requires you to have `gfortran` installed. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) (and notes below for MacOS) for instructions on how to install `gfortran`.
+> If you are on Linux/Windows and have followed above step to install `scipy` using `conda`, then feel free to skip this step.
+
+This package requires you to have `gfortran` (or at least `libgfortran` on Linux/Windows) installed. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) (and notes below for MacOS) for instructions on how to install `gfortran`.
 
 <details>
   <summary>Notes for installing `gfortran` on MacOS</summary>
@@ -50,7 +52,7 @@ This package requires you to have `gfortran` installed. Check [this page](https:
   <summary>Reasons for why we need `gfortran`</summary>
 
 - A *Fortran compiler* is needed for MacOS to build C/Fortran libraries from source, as [wheels](https://packaging.python.org/en/latest/glossary/#term-Wheel) are not provided for MacOS due to a problem described [here](https://github.com/lanl/ExactPack/issues/2). 
-- Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import.
+- Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import. If you've followed step one above to install `scipy` via `conda`, then `libgfortran5` is downloaded so no further action is needed.
   
 </details>
 
