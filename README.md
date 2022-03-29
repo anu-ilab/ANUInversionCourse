@@ -25,6 +25,10 @@ and enter that environment with
 ```console
 conda activate inversion_course
 ```
+and if you are on MacOS M1 chip:
+```console
+conda install -c conda-forge gfortran
+```
 
 ### 2. Dependency
 
@@ -32,27 +36,18 @@ conda activate inversion_course
 
 This package requires you to have `gfortran` (or at least `libgfortran` on Linux/Windows) installed. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) (and notes below for MacOS) for instructions on how to install `gfortran`.
 
-<details>
-  <summary>Notes for installing `gfortran` on MacOS</summary>
-
-  Make sure you have `xcode` installed (from App Store), and then the command line tools installed by opening terminal and typing in:
-  ```console
-  xcode-select --install
-  ```
-
-  *For M1 chip*: if you've set up a conda environment, then another option is to install `gfortran` using `conda`:
-  ```console
-  conda install -c conda-forge gfortran
-  ```
-  The `gfortran` version is updated (`gfortran-11`) for M1 chip but not for the Intel one (as per [this](https://anaconda.org/conda-forge/gfortran))
-
-</details>
+#### Notes for installing `gfortran` on MacOS
+1. Install `XCode` (from App Store)
+2. Install command line tools `xcode-select --install`
+3. *For M1 chip*: if you've set up a conda environment, then `conda install -c conda-forge gfortran` will work
+4. *If step 3 doesn't suit you*: follow the instructions in [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) about how to install `gfortran`
 
 <details>
-  <summary>Reasons for why we need `gfortran`</summary>
+  <summary>Reasons for why we need `gfortran` (only) on MacOS</summary>
 
 - A *Fortran compiler* is needed for MacOS to build C/Fortran libraries from source, as [wheels](https://packaging.python.org/en/latest/glossary/#term-Wheel) are not provided for MacOS due to a problem described [here](https://github.com/lanl/ExactPack/issues/2). 
 - Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import. If you've followed step one above to install `scipy` via `conda`, then `libgfortran5` is downloaded so no further action is needed.
+- The issue on MacOS is possible to fix, but with some effort of uploading the package to `conda`, so this will be in future work
   
 </details>
 
