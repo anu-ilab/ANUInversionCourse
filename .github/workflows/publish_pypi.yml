@@ -45,10 +45,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        # os: [ubuntu-latest, windows-latest]
         # disable macos wheels until we find a solution for locating libgfortran.5.dylib:
         # a similar issue decription: https://github.com/lanl/ExactPack/issues/2
-        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Symlink gfortran for macOS
@@ -68,8 +68,8 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
-          # CIBW_ARCHS_MACOS: x86_64 universal2
-          # CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
+          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: ""
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *-musllinux_*
 
       - name: Upload artifact
@@ -94,7 +94,7 @@ jobs:
           echo ::set-output name=version::$(python -c "import _version as v; print(v.__version__)")
 
       - name: Create release tag
-        uses: rickstaa/action-create-tag@v1.2.1
+        uses: rickstaa/action-create-tag@v1.3.0
         with:
           tag: "v${{ steps.release_version.outputs.version }}"
           force_push_tag: true
