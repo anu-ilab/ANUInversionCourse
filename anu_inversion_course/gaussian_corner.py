@@ -22,6 +22,8 @@ def gaussian_corner(C,m,confint=[68,95],C2=None,m2=None,labels=None,title=None,f
             
                 
     '''
+    import numpy as np
+    import matplotlib.pyplot as plt
     from scipy import stats
     from anu_inversion_course import plotcovellipse as pc
     ndim = np.shape(C)[0]
