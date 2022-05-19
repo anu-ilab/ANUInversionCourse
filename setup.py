@@ -43,5 +43,6 @@ setup(
         "tqdm>=4.62.0",
         "seaborn>=0.11.0",
         "jupyterlab>=3.2.0",
+        "corner",
     ],
 )

@@ -6,4 +6,5 @@ __all__ = [
     "rf",
     "rayTracer",
     "rjmcmc",
+    "gaussian_corner",
 ]
