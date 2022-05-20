@@ -45,10 +45,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         # disable macos wheels until we find a solution for locating libgfortran.5.dylib:
         # a similar issue decription: https://github.com/lanl/ExactPack/issues/2
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Symlink gfortran for macOS
