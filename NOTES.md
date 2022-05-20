@@ -27,7 +27,7 @@ $ git clone https://github.com/anu-ilab/ANUInversionCourse.git
 
 Check that the version is not something as old as 4 or 5:
 ```bash
-$ gfortran --verion
+$ gfortran --version
 ```
 
 **Step 3**. To set up environment and install the package (in developer mode):
@@ -35,6 +35,9 @@ $ gfortran --verion
 # recommended environment set up (optional)
 $ conda env create -f environment_dev.yml
 $ conda activate inversion_course_dev
+
+# double check that the gfortran installed above is still in the path
+$ gfortran --version
 
 # begin installation
 $ cd <path-to-parent-folder>/ANUInversionCourse
