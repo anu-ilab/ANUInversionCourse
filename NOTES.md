@@ -14,6 +14,7 @@ Here are some notes that might be useful for future contributors.
 4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
 5. [More references](NOTES.md#more-references)
 6. [Appendix - semantic versioning](NOTES.md#appendix-i---sementic-versioning)
+7. [Additional Notes about gfortran](NOTES.md#additional-notes-about-gfortran)
 
 ## Getting started
 
@@ -199,3 +200,9 @@ TLDR, for a version number `a.b.c`:
   - `c` is the patch version, and it's increased when there are only bug fixes related change
   - the version `1.0.0` indicates the first official release (that defines the public API)
   - 1.0.0.dev1 < 1.0.0.dev2 < 1.0.0 < 1.0.1
+
+## Additional Notes about gfortran
+
+- A *Fortran compiler* is needed for MacOS to build C/Fortran libraries from source, as [wheels](https://packaging.python.org/en/latest/glossary/#term-Wheel) are not provided for MacOS due to a problem described [here](https://github.com/lanl/ExactPack/issues/2). 
+- Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import. If you've followed step one above to install `scipy` via `conda`, then `libgfortran5` is downloaded so no further action is needed.
+- The issue on MacOS is possible to fix, but with some effort of uploading the package to `conda`, so this will be in future work

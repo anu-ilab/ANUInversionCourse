@@ -7,8 +7,8 @@ This package contains resources to be used in the [inversion course practicals](
 
 ## Table of contents
 - [Getting started](README.md#getting-started)
-  - [Set up virtual environment](README.md#1-set-up-virtual-environment)
-  - [Dependency](README.md#2-dependency)
+  - [Pre-requisites](README.md#1-pre-requisites)
+  - [Set up a virtual environment (optional)](README.md#2-set-up-a-virtual-environment-optional)
   - [Installation](README.md#3-installation)
   - [Check](README.md#4-check)
 - [Troubleshooting](README.md#troubleshooting)
@@ -16,47 +16,98 @@ This package contains resources to be used in the [inversion course practicals](
 
 ## Getting started
 
-### 1. Set up virtual environment
-(optional) It's recommended to use a virtual environment (using `conda` or `venv`, etc.) so that it doesn't conflict with your other Python projects. Create a new environment with 
-```console
-conda create -n inversion_course python=3.10 scipy
-``` 
-and enter that environment with 
-```console
-conda activate inversion_course
-```
-and if you are on MacOS M1 chip:
-```console
-conda install -c conda-forge gfortran
-```
+### 1. Pre-requisites
 
-### 2. Dependency
+Before installing the `ANU-inversion-course` package, make sure you have the following ready:
 
-> If you are on Linux/Windows and have followed above step to install `scipy` using `conda`, then feel free to skip this step.
+- A computer
+- OS-specific dependencies
+  - For *Linux* users: ensure your `apt` / `dnf` / `pacman` works
+  - For *MacOS* users: 
+    1. download `XCode` from "App Store" (you'll need to create an Apple account if not already)
+    2. install command line tools by typing this in the "Terminal": `xcode-select --install`
+  - For *Windows* users: install [Cygwin](https://www.cygwin.com/), and remember to use it for the following dependencies
+- [Python](https://www.python.org/downloads/) >= 3.6
+- [gfortran](https://fortran-lang.org/learn/os_setup/install_gfortran)
 
-This package requires you to have `gfortran` (or at least `libgfortran` on Linux/Windows) installed. Check [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) (and notes below for MacOS) for instructions on how to install `gfortran`.
 
-#### Notes for installing `gfortran` on MacOS
-1. Install `XCode` (from App Store)
-2. Install command line tools `xcode-select --install`
-3. *For M1 chip*: if you've set up a conda environment, then `conda install -c conda-forge gfortran` will work
-4. *If step 3 doesn't suit you*: follow the instructions in [this page](https://fortran-lang.org/learn/os_setup/install_gfortran) about how to install `gfortran`
+### 2. Set up a virtual environment (optional)
+
+It's recommended to use a virtual environment (e.g. [`venv`](https://docs.python.org/3/library/venv.html), [`virtualenv`](https://virtualenv.pypa.io/en/latest/), [`mamba`](https://mamba.readthedocs.io/en/latest/) or [`conda`](https://docs.conda.io/en/latest/)) so that it doesn't conflict with your other Python projects. 
+
+Open a terminal (or a Cygwin shell for Windows users) and refer to the cheat sheet below for how to create, activate, exit and remove a virtual environment.
 
 <details>
-  <summary>Reasons for why we need `gfortran` (only) on MacOS</summary>
+  <summary>venv</summary>
 
-- A *Fortran compiler* is needed for MacOS to build C/Fortran libraries from source, as [wheels](https://packaging.python.org/en/latest/glossary/#term-Wheel) are not provided for MacOS due to a problem described [here](https://github.com/lanl/ExactPack/issues/2). 
-- Fortran libraries (`libgfortran.5.dylib`) is also needed for other operating systems. Otherwise `anu_inversion_course.rf` will fail to import. If you've followed step one above to install `scipy` via `conda`, then `libgfortran5` is downloaded so no further action is needed.
-- The issue on MacOS is possible to fix, but with some effort of uploading the package to `conda`, so this will be in future work
+  Ensure you have *python >= 3.6*.
+
+  Use the first two lines below to create and activate the new virtual environment. The other lines are for your
+  future reference.
+
+  ```console
+  $ python -m venv <path-to-new-env>/inversion_course           # to create
+  $ source <path-to-new-env>/inversion_course/bin/activate      # to activate
+  $ deactivate                                                  # to exit
+  $ rm -rf <path-to-new-env>/inversion_course                   # to remove
+  ```
   
 </details>
 
-### 3. Installation
-Type the following in your terminal:
+<details>
+  <summary>virtualenv</summary>
 
-```bash
-pip install anu-inversion-course
+  Use the first two lines below to create and activate the new virtual environment. The other lines are for your
+  future reference.
+
+  ```console
+  $ virtualenv <path-to-new-env>/inversion_course -p=3.10       # to create
+  $ source <path-to-new-env>/inversion_course/bin/activate      # to activate
+  $ deactivate                                                  # to exit
+  $ rm -rf <path-to-new-env>/inversion_course                   # to remove
+  ```
+
+</details>
+
+<details>
+  <summary>mamba</summary>
+
+  Use the first two lines below to create and activate the new virtual environment. The other lines are for your
+  future reference.
+
+  ```console
+  $ mamba create -n inversion_course python=3.10                # to create
+  $ mamba activate inversion_course                             # to activate
+  $ mamba deactivate                                            # to exit
+  $ mamba env remove -n inversion_course                        # to remove
+  ```
+
+</details>
+
+<details>
+  <summary>conda</summary>
+
+  Use the first two lines below to create and activate the new virtual environment. The other lines are for your
+  future reference.
+
+  ```console
+  $ conda create -n inversion_course python=3.10                # to create
+  $ conda activate inversion_course                             # to activate
+  $ conda deactivate                                            # to exit
+  $ conda env remove -n inversion_course                        # to remove
+  ```
+
+</details>
+
+
+### 3. Installation
+
+Type the following in your terminal (or Cygwin shell for Windows users):
+
+```console
+$ pip install jupyterlab anu-inversion-course
 ```
+
 ### 4. Check
 And when you run `jupyter-lab` to do the practicals, make sure you are in the same environment as where your `anu-inversion-course` was installed. You can try to test this by checking if the following commands give you similar result:
 
@@ -91,3 +142,4 @@ Check out [NOTES.md](NOTES.md) if you'd like to contribute to this package.
 4. [Adding Fortran extensions](NOTES.md#adding-fortran-extensions)
 5. [More references](NOTES.md#more-references)
 6. [Appendix - semantic versioning](NOTES.md#appendix-i---sementic-versioning)
+7. [Additional Notes about gfortran](NOTES.md#additional-notes-about-gfortran)
