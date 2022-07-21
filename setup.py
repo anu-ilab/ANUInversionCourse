@@ -38,7 +38,6 @@ setup(
     ],
     install_requires=[
         "numpy>=1.18",
-        "matplotlib>=3.3.0",
         "scipy>=1.0.0",
         "tqdm>=4.62.0",
         "seaborn>=0.11.0",
