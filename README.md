@@ -105,7 +105,7 @@ Open a terminal (or a Cygwin shell for Windows users) and refer to the cheat she
 Type the following in your terminal (or Cygwin shell for Windows users):
 
 ```console
-$ pip install jupyterlab anu-inversion-course
+$ pip install jupyterlab matplotlib anu-inversion-course
 ```
 
 ### 4. Check
