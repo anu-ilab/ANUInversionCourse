@@ -42,7 +42,6 @@ setup(
         "scipy>=1.0.0",
         "tqdm>=4.62.0",
         "seaborn>=0.11.0",
-        "jupyterlab",
         "corner",
     ],
 )
