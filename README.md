@@ -21,17 +21,19 @@ This package contains resources to be used in the [inversion course practicals](
 Before installing the `ANU-inversion-course` package, make sure you have the following ready:
 
 - A computer with a recent OS.
-- OS-specific dependencies including recent gcc/g++/gfortran/python
-  - For *Linux* users: Ensure your `apt` / `dnf` / `pacman` package manager works and install gcc, g++, gfortran and python using it.
-    Plus any other software development tools you want.
+- OS-specific dependencies including a system package manager:
+  - For *Linux* users:
+    1. Familiarise yourself with the linux system package manager `apt` / `dnf` / `pacman` / `yast` etc.
   - For *MacOS* users:
-    1. Download `XCode` from "App Store" (you'll need to create an Apple account if not already)
+    1. Download `Xcode` from "App Store" (you'll need to create an Apple account if not already done)
     2. Install the Xcode command line tools by typing this in "Terminal": `xcode-select --install; sudo xcodebuild -license; sudo softwareinstall -i -a`
-    3. Install gfortran and recent python e.g. from MacPorts, condaforge etc. See (https://fortran-lang.org/learn/os_setup/install_gfortran)
-  - For *Windows* users: install [Cygwin](https://www.cygwin.com/), and install gcc, g++, gfortran and python using it.
-    Plus any other software development tools you want.
+    3. Install a recent package manager e.g. one of [Anaconda] (https://www.anaconda.com/), [MacPorts] (https://www.macports.org/), [HomeBrew] (https://brew.sh/)
+  - For *Windows* users:
+    1. Install the [Cygwin] package manager (https://www.cygwin.com/)
+- Install gcc, g++, gfortran and python3.6+ using the package manager.
+- Install any other software development tools you want using the package manager.
 
-All of these tools can be downloaded in source form and compiled however this should only be necessary if you have an unusual setup.
+All of these tools can usually be downloaded in source form and compiled however this should only be necessary if you have an unusual setup.
 
 ### 2. Set up a virtual environment (optional)
 
