@@ -31,21 +31,23 @@ Before installing the `ANU-inversion-course` package, make sure you have the fol
     4. Install a recent package manager e.g. one of `Anaconda` (https://www.anaconda.com/), `MacPorts` (https://www.macports.org/), `HomeBrew` (https://brew.sh/)
   - For *Windows* users:
     1. Install the `Cygwin` package manager (https://www.cygwin.com/)
-- Install gcc, g++, gfortran and python3.6+ using the package manager.
+- Install gcc, g++, gfortran and python (3.6+) using the package manager. Use the package manager search facility to find options.
 - Install any other software development tools you want using the package manager.
+- If necessary add your package manager installation directory to the system PATH environment variable so installed programs can/will be found.
 
 These tools can usually be downloaded in source form and compiled however this should only be necessary if you have an unusual setup.
+Don't be tempted by web sites that claim easy one step package installs, install a package manager. Package managers are far superior in almost every way.
 
-### 2. Set up a virtual environment [optional]
+### 2. Set up a python virtual environment [optional]
 
 It's recommended to use a python virtual environment (e.g. [`venv`](https://docs.python.org/3/library/venv.html), [`virtualenv`](https://virtualenv.pypa.io/en/latest/), [`mamba`](https://mamba.readthedocs.io/en/latest/) or [`conda`](https://docs.conda.io/en/latest/)) so that ANU-Inversion-Course doesn't conflict with your other Python projects. 
 
-Open a terminal (or a Cygwin shell for Windows users) and refer to the cheat sheet below for how to create, activate, exit and remove a virtual environment.
+Open a terminal (or a Cygwin shell for Windows users) and refer to the cheat sheet below for how to create, activate, exit and remove a virtual environment. `$ ` is the system prompt.
 
 <details>
   <summary>venv</summary>
 
-  Ensure you have *python >= 3.6*.
+  Ensure you have and are using *python >= 3.6*. It may not be called `python` but something like `python3`, `python3.10` etc.
 
   Use the first two lines below to create and activate the new virtual environment. The other lines are for your
   future reference.
@@ -127,9 +129,9 @@ ANU-inversion-course               0.1.0
 
 ## Troubleshooting
 
-If you find problems *importing* `anu_inversion_course.rf`, try to search the error message you get. [Here](https://stackoverflow.com/questions/58793399/importerror-library-not-loaded-for-f2py) contains a nice explanation for the possible cause. And here is how to locate `libgfortran`:
+If you find problems *importing* `anu_inversion_course.rf`, try to search for the error message you get. [Here](https://stackoverflow.com/questions/58793399/importerror-library-not-loaded-for-f2py) contains a nice explanation for one possible cause. And here is how to locate `libgfortran`:
 ```console
-gfortran --print-file-name libgfortran.5.dylib
+gfortran --print-file-name libgfortran.5.dylib # macOS
 ```
 
 ## Developer Notes
