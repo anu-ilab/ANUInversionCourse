@@ -25,19 +25,20 @@ Before installing the `ANU-inversion-course` package, make sure you have the fol
   - For *Linux* users:
     1. Familiarise yourself with the linux system package manager `apt` / `dnf` / `pacman` / `yast` etc.
   - For *MacOS* users:
-    1. Download `Xcode` from "App Store" (you'll need to create an Apple account if not already done)
-    2. Install the Xcode command line tools by typing this in "Terminal": `xcode-select --install; sudo xcodebuild -license; sudo softwareinstall -i -a`
-    3. Install a recent package manager e.g. one of [Anaconda] (https://www.anaconda.com/), [MacPorts] (https://www.macports.org/), [HomeBrew] (https://brew.sh/)
+    1. Download and install `Xcode` from "App Store" (you'll need to create an Apple account if not already done)
+    2. Install the Xcode command line tools by typing this in "Terminal":
+       `xcode-select --install; sudo xcodebuild -license; sudo softwareinstall -i -a`
+    4. Install a recent package manager e.g. one of `Anaconda` (https://www.anaconda.com/), `MacPorts` (https://www.macports.org/), `HomeBrew` (https://brew.sh/)
   - For *Windows* users:
-    1. Install the [Cygwin] package manager (https://www.cygwin.com/)
+    1. Install the `Cygwin` package manager (https://www.cygwin.com/)
 - Install gcc, g++, gfortran and python3.6+ using the package manager.
 - Install any other software development tools you want using the package manager.
 
-All of these tools can usually be downloaded in source form and compiled however this should only be necessary if you have an unusual setup.
+These tools can usually be downloaded in source form and compiled however this should only be necessary if you have an unusual setup.
 
-### 2. Set up a virtual environment (optional)
+### 2. Set up a virtual environment [optional]
 
-It's recommended to use a python virtual environment (e.g. [`venv`](https://docs.python.org/3/library/venv.html), [`virtualenv`](https://virtualenv.pypa.io/en/latest/), [`mamba`](https://mamba.readthedocs.io/en/latest/) or [`conda`](https://docs.conda.io/en/latest/)) so that it doesn't conflict with your other Python projects. 
+It's recommended to use a python virtual environment (e.g. [`venv`](https://docs.python.org/3/library/venv.html), [`virtualenv`](https://virtualenv.pypa.io/en/latest/), [`mamba`](https://mamba.readthedocs.io/en/latest/) or [`conda`](https://docs.conda.io/en/latest/)) so that ANU-Inversion-Course doesn't conflict with your other Python projects. 
 
 Open a terminal (or a Cygwin shell for Windows users) and refer to the cheat sheet below for how to create, activate, exit and remove a virtual environment.
 
