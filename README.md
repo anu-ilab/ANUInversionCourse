@@ -31,7 +31,7 @@ Before installing the `ANU-inversion-course` package, make sure you have the fol
     4. Install a recent package manager e.g. one of `Anaconda` (https://www.anaconda.com/), `MacPorts` (https://www.macports.org/), `HomeBrew` (https://brew.sh/)
   - For *Windows* users:
     1. Install the `Cygwin` package manager (https://www.cygwin.com/)
-- Install gcc, g++, gfortran and python (3.6+) using the package manager. Use the package manager search facility to find options.
+- Install git, gcc, g++, gfortran and python (3.6+) using the package manager. Use the package manager search facility to find options.
 - Install any other software development tools you want using the package manager.
 - If necessary add your package manager installation directory to the system PATH environment variable so installed programs can/will be found.
 
