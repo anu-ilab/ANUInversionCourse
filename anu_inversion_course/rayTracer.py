@@ -381,11 +381,11 @@ class gridModel(object):
             disti=distip1
             i+=1
         return tts,paths,AA
-    def tracer(self,srcs,recs):
+    def tracer(self,srcs,recs, verbose=True):
         tts = np.zeros(srcs.shape[0]*recs.shape[0])
         AA = np.zeros([srcs.shape[0]*recs.shape[0],self.nx*self.ny])
         i = 0
-        t=tqdm.tqdm(total = srcs.shape[0]*recs.shape[0])
+        t=tqdm.tqdm(total = srcs.shape[0]*recs.shape[0], disable=!verbose)
         for src in srcs:
             self.shootInitial(src)
             for rec in recs:

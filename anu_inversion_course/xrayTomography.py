@@ -114,7 +114,7 @@ def displayModel(model,paths=None,extent=(0,1,0,1),clim=None,cmap=None,figsize=(
     plt.show()
 
 
-def tracer(model,paths,extent=(0,1,0,1)):
+def tracer(model,paths,extent=(0,1,0,1),verbose=True):
     try:
         nx,ny = model.shape
     except:
@@ -139,7 +139,7 @@ def tracer(model,paths,extent=(0,1,0,1)):
     A = np.zeros([npaths,nx*ny])
     attns = np.zeros([npaths])
     #print ""
-    t = tqdm.tqdm(desc="Evaluating paths",total=npaths)
+    t = tqdm.tqdm(desc="Evaluating paths",total=npaths,disable=(not verbose))
     for ip,p in enumerate(paths):
         xs,ys,xr,yr = p
         pathLength = np.sqrt((xr-xs)**2 + (yr-ys)**2)
